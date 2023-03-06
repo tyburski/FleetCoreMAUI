@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+	<debug-overrides>
+		<trust-anchors>
+			<certificates src="@raw/cert" />
+		</trust-anchors>
+	</debug-overrides>
+	<domain-config>
+		<!-- Android Emulator's localhost "alias" IP - required for dev connections -->
+		<domain includeSubdomains="true">10.0.2.2</domain>
+	</domain-config>
+</network-security-config>

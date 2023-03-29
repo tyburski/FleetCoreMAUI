@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FleetCoreMAUI.ModPanel" 
+             BackgroundColor="#78A2CC">
+    <Shell.TitleView >
+        <Label Text="PANEL MODERATORA" FontAttributes="Bold" FontSize="18" VerticalOptions="Center" TextColor="White"/>
+    </Shell.TitleView>
+
+    <Grid ColumnSpacing="0" RowSpacing="0">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        
+        <BoxView Color="White" 
+                 Grid.Row="0"
+                 CornerRadius="10"
+                 Margin="20">
+            <BoxView.Shadow>
+                <Shadow Brush="Black"
+                        Offset="10,10"
+                        Radius="30"
+                        Opacity="0.3"
+                        />
+            </BoxView.Shadow>
+            <BoxView.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ModCreateUserCommand}"/>
+            </BoxView.GestureRecognizers>
+        </BoxView>
+        <Label Text="Dodaj Użytkownika"
+               Grid.Row="0"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" 
+               Padding="40"
+               FontSize="18"
+               FontAttributes="Bold"/>
+        
+        <BoxView Color="White" 
+                 Grid.Row="0"
+                 Grid.Column="1"
+                 CornerRadius="10"
+                 Margin="20">
+            <BoxView.Shadow>
+                <Shadow Brush="Black"
+                        Offset="10,10"
+                        Radius="30"
+                        Opacity="0.3"
+                        />
+            </BoxView.Shadow>
+            <BoxView.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ModUsersCommand}"/>
+            </BoxView.GestureRecognizers>
+        </BoxView>
+        <Label Text="Użytkownicy"
+               Grid.Row="0"
+                Grid.Column="1"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" 
+               Padding="40"
+               FontSize="18"
+               FontAttributes="Bold"/>
+        
+        <BoxView Color="White" 
+                 Grid.Row="1"
+                 Grid.Column="0"
+                 CornerRadius="10"
+                 Margin="20">
+            <BoxView.Shadow>
+                <Shadow Brush="Black"
+                        Offset="10,10"
+                        Radius="30"
+                        Opacity="0.3"
+                        />
+            </BoxView.Shadow>
+            <BoxView.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ModCreateVehicleCommand}"/>
+            </BoxView.GestureRecognizers>
+        </BoxView>
+        <Label Text="Dodaj Pojazd"
+               Grid.Row="1"
+                Grid.Column="0"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" 
+               Padding="40"
+               FontSize="18"
+               FontAttributes="Bold"/>
+    </Grid>
+
+</ContentPage>

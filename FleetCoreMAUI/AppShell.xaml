@@ -9,6 +9,28 @@
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />
+        Route="loading" />
+
+    <ShellContent
+        ContentTemplate="{DataTemplate local:LoginPage}"
+        Route="login"/>
+    <ShellContent
+        ContentTemplate="{DataTemplate local:MenuPage}"
+        Route="menu"/>
+    <ShellContent
+        ContentTemplate="{DataTemplate local:BonusPage}"
+        />
+    <ShellContent
+        ContentTemplate="{DataTemplate local:ModPanel}"
+        />
+    <ShellContent
+        ContentTemplate="{DataTemplate local:ModCreateUserPage}"
+        />
+    <ShellContent
+        ContentTemplate="{DataTemplate local:ModCreateVehiclePage}"
+        />
+    <ShellContent
+        ContentTemplate="{DataTemplate local:ModUsersPage}"
+        />
 
 </Shell>

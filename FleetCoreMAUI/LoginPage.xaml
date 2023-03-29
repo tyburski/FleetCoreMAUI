@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="FleetCoreMAUI.LoginPage"
+             Shell.NavBarIsVisible="False">
+
+    <VerticalStackLayout Spacing="10"
+                         VerticalOptions="Start"
+                         HorizontalOptions="Center">
+
+        <Image Source="flota.png" VerticalOptions="Start" HorizontalOptions="Center" Margin="50,75,75,50" Scale="1.2"/>
+
+
+        <Border Stroke="Black"
+        StrokeThickness="1"
+        Background="transparent"
+        Padding="10,0"
+        WidthRequest="300"
+        HorizontalOptions="Center">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="3" />
+            </Border.StrokeShape>
+            <Entry x:Name="username"
+                   Text="{Binding username}"
+                   FontAttributes="Bold"
+                   FontSize="18"
+                Placeholder="Nazwa użytkownika" 
+               />
+        </Border>
+
+        <Border Stroke="Black"
+        StrokeThickness="1"
+        Background="transparent"
+        Padding="10,0"     
+        HorizontalOptions="Center"
+                WidthRequest="300">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="3" />
+            </Border.StrokeShape>
+            <Entry x:Name="password"
+                   Text="{Binding password}"
+                   FontAttributes="Bold"
+                   FontSize="18"
+                Placeholder="Hasło"
+                   IsPassword="true"
+                  />
+        </Border>
+
+        <Button Command="{Binding LoginCommand}" Text="Zaloguj" TextColor="Black" FontAttributes="Bold" FontSize="18" WidthRequest="300" CornerRadius="3" Margin="20">
+            
+        </Button>
+
+    </VerticalStackLayout>
+
+</ContentPage>

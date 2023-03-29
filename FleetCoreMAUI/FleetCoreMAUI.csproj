@@ -50,10 +50,83 @@
 
 	<ItemGroup>
 	  <None Remove="Platforms\Android\Resources\raw\cert.cer" />
+	  <None Remove="Resources\Fonts\Quicksand-VariableFont_wght.ttf" />
+	  <None Remove="Resources\Images\dots.png" />
+	  <None Remove="Resources\Images\exit.svg" />
+	  <None Remove="Resources\Images\flota.png" />
+	  <None Remove="Resources\Images\fuel.svg" />
+	  <None Remove="Resources\Images\money.svg" />
+	  <None Remove="Resources\Images\notice.svg" />
+	  <None Remove="Resources\Images\notice1.svg" />
+	  <None Remove="Resources\Images\star.png" />
+	  <None Remove="Resources\Images\truck.svg" />
+	  <None Remove="Resources\Images\warning.svg" />
+	  <None Remove="Resources\Images\yellowstar.png" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="CommunityToolkit.Maui" Version="2.0.0" />
 	  <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="ModCreateVehiclePage.xaml.cs">
+	    <DependentUpon>ModCreateVehiclePage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="ModCreateUserPage.xaml.cs">
+	    <DependentUpon>ModCreateUserPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="modUsersPage.xaml.cs">
+	    <DependentUpon>ModUsersPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="LoginPage.xaml.cs">
+	    <DependentUpon>LoginPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="ModPanel.xaml.cs">
+	    <DependentUpon>ModPanel.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="MenuPage.xaml.cs">
+	    <DependentUpon>MenuPage.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="BonusPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ModCreateVehiclePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ModCreateUserPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ModUsersPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="CompanyPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="LoginPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ModPanel.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="MenuPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="NoticePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="RefuelPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Spinner.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="VehiclesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>

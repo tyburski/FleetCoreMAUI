@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FleetCoreMAUI.BonusPage"
+             Shell.NavBarHasShadow="true">
+    <Shell.TitleView>
+        <Label Text="{Binding Month, Mode=TwoWay}"
+               FontSize="18"
+               TextColor="Black"
+               FontAttributes="Bold"
+                   HorizontalOptions="Start"/>
+    </Shell.TitleView>
+    <VerticalStackLayout Padding="30" Spacing="30" HorizontalOptions="Center">
+        
+        <Border Stroke="Black"
+        StrokeThickness="1"
+        Background="transparent"
+        Padding="10,0" 
+         WidthRequest="300"
+        HorizontalOptions="Center">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="1" />
+            </Border.StrokeShape>
+            <Editor Text="{Binding BonusContent}"
+                Placeholder="Wpisz" 
+                    FontSize="18"
+                    AutoSize="TextChanges"
+
+               />
+        </Border>
+        <Button Command="{Binding CreateBonusCommand}" Text="Prześlij" TextColor="Black" FontSize="18" FontAttributes="Bold" WidthRequest="300" CornerRadius="3"></Button>
+    </VerticalStackLayout>
+</ContentPage>

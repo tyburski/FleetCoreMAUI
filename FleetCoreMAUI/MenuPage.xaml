@@ -1,0 +1,204 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             
+             x:Class="FleetCoreMAUI.MenuPage"
+             Shell.NavBarIsVisible="False" 
+             BackgroundColor="#78A2CC" >
+    <ScrollView VerticalOptions="FillAndExpand">
+        <StackLayout VerticalOptions="FillAndExpand">
+        <Grid ColumnSpacing="0" RowSpacing="0" VerticalOptions="FillAndExpand">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="345"/>
+                <RowDefinition Height="345"/>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <BoxView Grid.Row="0"
+                 Grid.ColumnSpan="2"
+                 Color="White"
+                 CornerRadius="0">
+                <BoxView.Shadow>
+                    <Shadow Brush="Black"
+                        Offset="100,5"
+                        Radius="100"
+                        Opacity="0.2"
+                        />
+                </BoxView.Shadow>
+            </BoxView>
+            <Grid Grid.Row="0"
+              Grid.ColumnSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Image Grid.Column="0"
+               HorizontalOptions="Start"
+               VerticalOptions="Center" Source="flota.png" Margin="10" Scale="1"/>
+
+
+                <Button  Grid.Column="1"
+               HorizontalOptions="End"
+               VerticalOptions="Center" Command="{Binding LogOutCommand}" Text="Wyloguj" BackgroundColor="#78A2CC" TextColor="Black" FontAttributes="Bold" FontSize="18" CornerRadius="3" Margin="10" Padding="10"/>
+
+
+            </Grid>
+
+            <BoxView Color="White" 
+                 Grid.Row="1"
+                 CornerRadius="10"
+                 Margin="20">
+                <BoxView.Shadow>
+                    <Shadow Brush="Black"
+                        Offset="10,10"
+                        Radius="30"
+                        Opacity="0.3"
+                        />
+                </BoxView.Shadow>
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding NoticeCommand}"/>
+                </BoxView.GestureRecognizers>
+            </BoxView>
+            <Image Source="notice1.svg" Grid.Row="1" VerticalOptions="Center" Margin="10,10" Scale="2.5" Opacity="1"/>
+            <Label Text="Ogłoszenia"
+               Grid.Row="1"
+               HorizontalOptions="Center"
+               VerticalOptions="End" 
+               Padding="40"
+               FontSize="18"
+               FontAttributes="Bold"/>
+
+            <BoxView Grid.Column="1"
+                 Grid.Row="1"
+                 Color="White"
+                 CornerRadius="10"
+                 Margin="20">
+                <BoxView.Shadow>
+                    <Shadow Brush="Black"
+                        Offset="10,10"
+                        Radius="30"
+                        Opacity="0.3"
+                        />
+                </BoxView.Shadow>
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding VehiclesCommand}"/>
+                </BoxView.GestureRecognizers>
+            </BoxView>
+            <Image Source="truck.svg" Grid.Row="1" Grid.Column="1" VerticalOptions="Center" Margin="10,10" Scale="0.8" Opacity="1"/>
+            <Label Grid.Column="1"
+               Grid.Row="1"
+               Text="Pojazdy"
+               HorizontalOptions="Center"
+              VerticalOptions="End" 
+               Padding="40"
+               FontSize="18"
+               FontAttributes="Bold"/>
+            <BoxView Grid.Row="2"
+                 Grid.Column="1"
+                 Color="White"
+                 CornerRadius="10"
+                 Margin="20"
+                 VerticalOptions="FillAndExpand">
+                <BoxView.Shadow>
+                    <Shadow Brush="Black"
+                        Offset="10,10"
+                        Radius="30"
+                        Opacity="0.3"
+                        />
+                </BoxView.Shadow>
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding BonusCommand}"/>
+                </BoxView.GestureRecognizers>
+            </BoxView>
+
+
+            <Image Source="money.svg" Grid.Row="2"
+                 Grid.Column="1" VerticalOptions="Center" Margin="10" Scale="1.7" Opacity="1"/>
+            <Label Grid.Row="2"
+               Grid.Column="1"
+               Text="Bonusy"
+               HorizontalOptions="Center"
+               VerticalOptions="End" 
+               Padding="40"
+               FontSize="18"
+               FontAttributes="Bold"/>
+
+
+
+            <BoxView Grid.Row="2"
+                 Color="White"
+                 CornerRadius="10"
+                 Margin="20">
+                <BoxView.Shadow>
+                    <Shadow Brush="Black"
+                        Offset="10,10"
+                        Radius="30"
+                        Opacity="0.3"
+                        />
+                </BoxView.Shadow>
+                <BoxView.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding CompanyCommand}"/>
+                </BoxView.GestureRecognizers>
+            </BoxView>
+            <Image Source="notice.svg" Grid.Row="2" VerticalOptions="Center" Margin="10,10" Scale="2.5" Opacity="1"/>
+            <Label Grid.Row="2"
+               Text="Dane Firmy"
+               HorizontalOptions="Center"
+              VerticalOptions="End" 
+               Padding="40"
+               FontSize="18"
+               FontAttributes="Bold"/>
+
+
+
+            <BoxView Grid.Row="3"
+                 Grid.ColumnSpan="2"
+                 Color="White" 
+                 CornerRadius="0">
+            </BoxView>
+            <Grid Grid.Row="3"
+              Grid.ColumnSpan="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Label Text="{Binding FullName, Mode=TwoWay}" 
+               HorizontalOptions="Start"
+               VerticalOptions="Center" 
+               FontAttributes="Bold"
+                   FontSize="18"
+                   Padding="10,0"
+                       
+               />
+
+                    <Label x:Name="Version"
+                           Grid.Column="1" 
+               HorizontalOptions="End"
+               VerticalOptions="Center" 
+               FontAttributes="Bold"
+                   FontSize="18"
+                   Margin="10"                      
+               />
+                    <Button  x:Name="modButton" Grid.Column="1"
+               HorizontalOptions="End"
+               VerticalOptions="Center" Command="{Binding ModPanelCommand}" Text="Panel moderatora" BackgroundColor="#78A2CC" TextColor="Black" FontAttributes="Bold" FontSize="18" CornerRadius="3" Margin="10" Padding="10"/>
+
+            </Grid>
+
+
+        </Grid>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

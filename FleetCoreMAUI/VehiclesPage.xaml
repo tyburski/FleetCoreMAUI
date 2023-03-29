@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:FleetCoreMAUI.Models"
+             xmlns:local="clr-namespace:FleetCoreMAUI"
+             x:Class="FleetCoreMAUI.VehiclesPage"
+             Shell.NavBarHasShadow="true">
+    <Shell.TitleView>
+        <Label Text="LISTA POJAZDÓW" FontSize="25" FontAttributes="Bold" VerticalOptions="Center"/>
+    </Shell.TitleView>
+    
+    <ScrollView>
+        <ListView x:Name="VehicleList" SelectionMode="None" HasUnevenRows="True" SeparatorVisibility="None">
+            <ListView.ItemTemplate>
+                <DataTemplate >
+
+                    <ViewCell>
+                        <StackLayout Padding="5">
+                            <StackLayout.Shadow>
+                                <Shadow Brush="Black"
+                                    Offset="10,10"
+                                    Radius="200"
+                                    Opacity="0.3"
+                                />
+                            </StackLayout.Shadow>
+                            <Border Stroke="#78A2CC"
+                                StrokeThickness="5"
+                                Background="transparent"
+>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="3" />
+                                </Border.StrokeShape>
+                                
+                                <Grid Padding="0" ColumnSpacing="0" RowSpacing="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="0.3*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="0.3*"/>
+                                        <ColumnDefinition Width="0.3*"/>
+                                        <ColumnDefinition Width="0.25*"/>
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <BoxView Grid.Row="0" Grid.Column="0" Margin="0" Color="White"/>
+
+                                    <Label Grid.Row="0" Grid.Column="0" FontAttributes="Bold" FontSize="25" Margin="5" x:DataType="models:Vehicle" 
+                       Text="{Binding Plate}"
+                        />
+
+
+                                    <BoxView Grid.Row="1" Grid.Column="0" Margin="0" Color="White"></BoxView>
+                                    <Label Grid.Row="1" Grid.Column="0" FontAttributes="None" FontSize="18" Margin="5" x:DataType="models:Vehicle"
+                       Text="{Binding VIN}"
+                        />
+                                    <BoxView Grid.RowSpan="2" Grid.Column="1" Margin="0" Color="White" ></BoxView>
+                                    <Image Grid.RowSpan="2" Grid.Column="1" Source="warning.svg" Scale="1" HorizontalOptions="Center" HeightRequest="30" IsVisible="false"/>
+
+                                    <BoxView Grid.RowSpan="2" Grid.Column="2" Margin="0" Color="LightGreen">
+
+                                    </BoxView>
+                                    <ImageButton Grid.RowSpan="2" Grid.Column="2" Source="fuel.svg" HorizontalOptions="Center" HeightRequest="45" Clicked="RefuelClicked" x:DataType="models:Vehicle" ClassId="{Binding Plate}"/>
+
+
+
+                                    <BoxView Grid.RowSpan="2" Grid.Column="3" Margin="0" Color="LightGray"/>
+
+
+                                    <ImageButton Grid.RowSpan="2" Grid.Column="3" HorizontalOptions="Center" HeightRequest="40" Clicked="OpenMenu" Source="dots.png" x:DataType="models:Vehicle" ClassId="{Binding Plate}"/>
+
+
+                                </Grid>
+                            </Border>
+                        </StackLayout>
+                       
+                       
+                    </ViewCell>
+                    
+
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ScrollView>
+</ContentPage>

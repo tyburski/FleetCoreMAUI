@@ -1,5 +1,5 @@
-﻿using FleetCoreMAUI.Models;
-using GoogleGson;
+﻿using CommunityToolkit.Maui.Views;
+using FleetCoreMAUI.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
@@ -41,7 +41,7 @@ namespace FleetCoreMAUI
                 }
             }
         }
-        public async Task Login()
+        public async Task<bool> Login()
         {
             var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
             var http = devSslHelper.HttpClient;
@@ -59,21 +59,42 @@ namespace FleetCoreMAUI
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var token = await response.Content.ReadAsStringAsync();
-                    Debug.WriteLine("Log in success");
-                    Debug.WriteLine(token);
+                    var result = await response.Content.ReadAsStringAsync();
+                    if(result!=null)
+                    {
+                        var datas = JsonConvert.DeserializeObject<Dictionary<int, string>>(result);
+
+                        await SecureStorage.Default.SetAsync("fullname", datas[0]);
+                        await SecureStorage.Default.SetAsync("role", datas[1]);
+                        await SecureStorage.Default.SetAsync("userId", datas[2]);
+
+                        return true;
+                    }
+                    return false;
                 }
+                return false;
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-
+                return false;
             }            
         }
         public ICommand LoginCommand =>
         new Command(async () =>
         {
-            await Login();
+            var popup = new Spinner();
+            Application.Current.MainPage.ShowPopup(popup);
+            if (await Login() is true)
+            {
+                popup.Close();
+                await Shell.Current.GoToAsync("//menu", true);
+            } 
+            else
+            {
+                popup.Close();
+                Application.Current.MainPage.DisplayAlert(null, "Nieprawidłowa nazwa użytkownika \n lub hasło", "Ok");
+            }
         });
     }
 }

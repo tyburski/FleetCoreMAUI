@@ -63,8 +63,10 @@
 	  <None Remove="Resources\Images\money.svg" />
 	  <None Remove="Resources\Images\noticeview.png" />
 	  <None Remove="Resources\Images\pencil.png" />
+	  <None Remove="Resources\Images\refresh.png" />
 	  <None Remove="Resources\Images\settings.png" />
 	  <None Remove="Resources\Images\star.png" />
+	  <None Remove="Resources\Images\tool.png" />
 	  <None Remove="Resources\Images\user.png" />
 	  <None Remove="Resources\Images\warningSign.png" />
 	  <None Remove="Resources\Images\yellowstar.png" />
@@ -78,6 +80,9 @@
 	<ItemGroup>
 	  <Compile Update="DoneRapairsPage.xaml.cs">
 	    <DependentUpon>DoneRapairsPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="ModLogs.xaml.cs">
+	    <DependentUpon>ModLogs.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="VehicleDetailsPage.xaml.cs">
 	    <DependentUpon>VehicleDetailsPage.xaml</DependentUpon>
@@ -113,6 +118,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="DoneRapairsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ModLogs.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="VehicleDetailsPage.xaml">

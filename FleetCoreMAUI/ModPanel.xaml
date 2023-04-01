@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FleetCoreMAUI.ModPanel" 
-             BackgroundColor="#78A2CC"
              Title="Panel Moderatora">
 
     <Grid ColumnSpacing="0" RowSpacing="0">
@@ -16,14 +15,14 @@
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        
-        <BoxView Color="White" 
-                 Grid.Row="1"
-                 CornerRadius="10"
-                 Margin="20">
+
+        <BoxView Color="#3664D6" 
+                 Grid.Row="0"
+                 CornerRadius="1"
+                 Margin="5">
             <BoxView.Shadow>
                 <Shadow Brush="Black"
-                        Offset="10,10"
+                        Offset="5,5"
                         Radius="30"
                         Opacity="0.3"
                         />
@@ -33,21 +32,22 @@
             </BoxView.GestureRecognizers>
         </BoxView>
         <Label Text="Dodaj Użytkownika"
-               Grid.Row="1"
+               Grid.Row="0"
                HorizontalOptions="Center"
-               VerticalOptions="Center" 
-               Padding="40"
-               FontSize="18"
-               FontAttributes="Bold"/>
-        
-        <BoxView Color="White" 
-                 Grid.Row="1"
+               VerticalOptions="Center" />
+
+
+
+
+
+        <BoxView Color="#22459C" 
+                 Grid.Row="0"
                  Grid.Column="1"
-                 CornerRadius="10"
-                 Margin="20">
+                 CornerRadius="1"
+                 Margin="5">
             <BoxView.Shadow>
                 <Shadow Brush="Black"
-                        Offset="10,10"
+                        Offset="5,5"
                         Radius="30"
                         Opacity="0.3"
                         />
@@ -57,22 +57,19 @@
             </BoxView.GestureRecognizers>
         </BoxView>
         <Label Text="Użytkownicy"
-               Grid.Row="1"
+               Grid.Row="0"
                 Grid.Column="1"
                HorizontalOptions="Center"
-               VerticalOptions="Center" 
-               Padding="40"
-               FontSize="18"
-               FontAttributes="Bold"/>
-        
-        <BoxView Color="White" 
-                 Grid.Row="2"
+               VerticalOptions="Center" />
+
+        <BoxView Color="#22459C" 
+                 Grid.Row="1"
                  Grid.Column="0"
-                 CornerRadius="10"
-                 Margin="20">
+                 CornerRadius="1"
+                 Margin="5">
             <BoxView.Shadow>
                 <Shadow Brush="Black"
-                        Offset="10,10"
+                        Offset="5,5"
                         Radius="30"
                         Opacity="0.3"
                         />
@@ -82,22 +79,42 @@
             </BoxView.GestureRecognizers>
         </BoxView>
         <Label Text="Dodaj Pojazd"
-               Grid.Row="2"
+               Grid.Row="1"
                 Grid.Column="0"
                HorizontalOptions="Center"
-               VerticalOptions="Center" 
-               Padding="40"
-               FontSize="18"
-               FontAttributes="Bold"/>
+               VerticalOptions="Center" />
 
-        <BoxView Color="White" 
-                 Grid.Row="0"
-                 Grid.ColumnSpan="2"
-                 CornerRadius="10"
-                 Margin="20">
+        <BoxView Color="#3664D6" 
+                 Grid.Row="1"
+                 Grid.Column="1"
+                 CornerRadius="1"
+                 Margin="5">
             <BoxView.Shadow>
                 <Shadow Brush="Black"
-                        Offset="10,10"
+                        Offset="5,5"
+                        Radius="30"
+                        Opacity="0.3"
+                        />
+            </BoxView.Shadow>
+            <BoxView.GestureRecognizers>
+                <TapGestureRecognizer Command="{Binding ModLogsCommand}"/>
+            </BoxView.GestureRecognizers>
+        </BoxView>
+        <Label Text="Aktywności"
+               Grid.Row="1"
+               Grid.Column="1"
+               HorizontalOptions="Center"
+               VerticalOptions="Center" />
+
+
+        <BoxView Color="#3664D6" 
+                 Grid.Row="2"
+                 Grid.Column="0"
+                 CornerRadius="1"
+                 Margin="5">
+            <BoxView.Shadow>
+                <Shadow Brush="Black"
+                        Offset="5,5"
                         Radius="30"
                         Opacity="0.3"
                         />
@@ -107,22 +124,19 @@
             </BoxView.GestureRecognizers>
         </BoxView>
         <Label Text="Dodaj Ogłoszenie"
-               Grid.Row="0"
-                Grid.ColumnSpan="2"
+               Grid.Row="2"
+                Grid.Column="0"
                HorizontalOptions="Center"
-               VerticalOptions="Center" 
-               Padding="40"
-               FontSize="18"
-               FontAttributes="Bold"/>
+               VerticalOptions="Center" />
 
-        <BoxView Color="White" 
+        <BoxView Color="#22459C" 
                  Grid.Row="2"
                  Grid.Column="1"
-                 CornerRadius="10"
-                 Margin="20">
+                 CornerRadius="1"
+                 Margin="5">
             <BoxView.Shadow>
                 <Shadow Brush="Black"
-                        Offset="10,10"
+                        Offset="5,5"
                         Radius="30"
                         Opacity="0.3"
                         />
@@ -135,10 +149,7 @@
                Grid.Row="2"
                 Grid.Column="1"
                HorizontalOptions="Center"
-               VerticalOptions="Center" 
-               Padding="40"
-               FontSize="18"
-               FontAttributes="Bold"/>
+               VerticalOptions="Center" />
     </Grid>
 
 </ContentPage>

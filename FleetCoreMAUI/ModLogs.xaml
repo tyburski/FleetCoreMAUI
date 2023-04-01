@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:models="clr-namespace:FleetCoreMAUI.Models"
+             x:Class="FleetCoreMAUI.ModLogs"
+             Title="Aktywności">
+    <Shell.TitleView>
+        <Grid HorizontalOptions="FillAndExpand">
+            <Label Text="Aktywności" HorizontalOptions="Start" TextColor="Black" FontAttributes="Bold" VerticalOptions="Center"></Label>
+            <ImageButton Source="refresh.png" Clicked="Refresh" HorizontalOptions="End" HeightRequest="60" WidthRequest="60" Padding="0,0,10,0" Margin="0" VerticalOptions="Center"/>
+        </Grid>
+        
+    </Shell.TitleView>
+    <ScrollView Grid.Row="1">
+        <ListView x:Name="list" SelectionMode="None" HasUnevenRows="True" SeparatorVisibility="None">
+            <ListView.ItemTemplate>
+                <DataTemplate >
+
+                    <ViewCell>
+                        <StackLayout>
+                            <Label TextColor="Black" Padding="5,15,5,0" FontAttributes="Bold" x:DataType="models:Log" 
+                       Text="{Binding ConvertedDate}"
+                        />
+
+                            <Label TextColor="Black" Padding="5,0,5,0" x:DataType="models:Log" 
+                       Text="{Binding Content}"
+                        />
+                        </StackLayout>
+
+
+                    </ViewCell>
+
+
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ScrollView>
+
+
+
+</ContentPage>

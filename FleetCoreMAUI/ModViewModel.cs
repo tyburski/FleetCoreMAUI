@@ -17,6 +17,7 @@ namespace FleetCoreMAUI
     {
         public ICommand ModCreateUserCommand => new Command(ModCreateUser);
         public ICommand ModCreateVehicleCommand => new Command(ModCreateVehicle);
+        public ICommand ModLogsCommand => new Command(ModLogs);
         public ICommand ModUsersCommand => new Command(ModUsers); 
         
         private async void ModCreateUser()
@@ -27,6 +28,10 @@ namespace FleetCoreMAUI
         private async void ModCreateVehicle()
         {
             await Shell.Current.GoToAsync("//menu/modpanel/modCreateVehicle");
+        }
+        private async void ModLogs()
+        {
+            await Shell.Current.GoToAsync("//menu/modpanel/modLogs");
         }
 
         private async void ModUsers()

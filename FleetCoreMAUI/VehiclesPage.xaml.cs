@@ -3,6 +3,7 @@ using FleetCoreMAUI.Models;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 using System.Windows.Input;
 
@@ -139,6 +140,14 @@ public partial class VehiclesPage : ContentPage
             {
                 await Shell.Current.GoToAsync($"vehicleDetails?plate={plate}");
             }
+            else if (action.Equals("Edytuj pojazd"))
+            {
+                await UpdateVehicle(plate);
+            }
+            else if (action.Equals("Usuń pojazd"))
+            {
+                await DeleteVehicle(plate);
+            }
         }   
     }
     public async Task<bool> GetVehicles()
@@ -165,6 +174,14 @@ public partial class VehiclesPage : ContentPage
                     }
                     else v.isWarning = false;
                 }
+                foreach(Repair r in v.Repairs)
+                {
+                    if(r.UserFinished is null)
+                    {
+                        v.isToRepair = true;
+                    }
+                    else v.isToRepair = false;
+                }
             }
 
             list = new ObservableCollection<VehicleViewModel>(vehicles);
@@ -176,6 +193,93 @@ public partial class VehiclesPage : ContentPage
         catch
         {
             return false;
+        }
+    }
+    public async Task UpdateVehicle(string plate)
+    {
+        string result = await DisplayPromptAsync($"{plate}:Zmiana Numeru", "Podaj nowy numer rejestracyjny:", "Prześlij", "Anuluj");
+        if(result!=null)
+        {
+            if(!result.Equals(String.Empty))
+            {
+                if (plate != null)
+                {
+                    var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
+                    var http = devSslHelper.HttpClient;
+
+                    var popup = new Spinner();
+                    Application.Current.MainPage.ShowPopup(popup);
+                    try
+                    {
+                        var veh = new UpdateVehicleModel()
+                        {
+                            Plate = plate,
+                            newPlate = result.ToUpper()
+
+                        };
+                        var json = JsonConvert.SerializeObject(veh);
+                        StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                        var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/vehicle/update", content);
+
+
+                        if (response.IsSuccessStatusCode)
+                        {
+                            popup.Close();
+                            await App.Current.MainPage.DisplayAlert("SUKCES", "Zmiany zostały zapisane", "Ok");
+                            OnAppearing();
+                        }
+                        else
+                        {
+                            popup.Close();
+                            await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                        }
+                    }
+                    catch
+                    {
+                        popup.Close();
+                        await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                    }
+                }       
+            }
+        }
+    }
+    public async Task DeleteVehicle(string plate)
+    {
+        if(plate!=null)
+        {
+            if(await Application.Current.MainPage.DisplayAlert("Jesteś pewny?", $"Czy chcesz usunąć pojazd {plate}?","Tak","Anuluj"))
+            {
+                var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
+                var http = devSslHelper.HttpClient;
+
+                var popup = new Spinner();
+                Application.Current.MainPage.ShowPopup(popup);
+                try
+                {
+                    var json = JsonConvert.SerializeObject(plate);
+                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/vehicle/delete", content);
+
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        popup.Close();
+                        await App.Current.MainPage.DisplayAlert("SUKCES", "Pojazd został usunięty", "Ok");
+                        OnAppearing();
+                    }
+                    else
+                    {
+                        popup.Close();
+                        await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                    }
+                }
+                catch
+                {
+                    popup.Close();
+                    await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                }
+            }
+            
         }
     }
    

@@ -34,7 +34,8 @@
 
 
                         <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Padding="2">
-                            <Image Source="warningsign.png" Margin="2" WidthRequest="30" HeightRequest="30" VerticalOptions="Center" HorizontalOptions="Center" x:DataType="models:VehicleViewModel" IsVisible="{Binding isWarning}"/>
+                            <Image Source="warningsign.png" Margin="2" WidthRequest="25" HeightRequest="25" VerticalOptions="Center" HorizontalOptions="Center" x:DataType="models:VehicleViewModel" IsVisible="{Binding isWarning}"/>
+                            <Image Source="tool.png" Margin="2" WidthRequest="25" HeightRequest="25" VerticalOptions="Center" HorizontalOptions="Center" x:DataType="models:VehicleViewModel" IsVisible="{Binding isToRepair}"/>
                             <Label FontAttributes="Bold" FontSize="30" Padding="0" VerticalOptions="End" x:DataType="models:VehicleViewModel" 
                        Text="{Binding Plate}"
                         />

@@ -28,7 +28,7 @@ public partial class MenuPage : ContentPage
     {
         base.OnAppearing();
         BindingContext = new MenuViewModel();
-        //isEndingCounter = 0;
+        isEndingCounter = 0;
         ModButton();
         await GetVehicles();
 
@@ -75,9 +75,10 @@ public partial class MenuPage : ContentPage
                 {
                     var checkDate = e.Date.Subtract(DateTime.Now);
 
-                    if (checkDate.TotalDays <= 14)
+                    if (checkDate.TotalDays <= 14 || e.Date<=DateTime.Now)
                     {
                         isEndingCounter++;
+                        Debug.WriteLine(e.Date);
                     }
                 }
             }

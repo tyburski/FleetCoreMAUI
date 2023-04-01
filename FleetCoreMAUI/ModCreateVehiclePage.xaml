@@ -3,62 +3,58 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="FleetCoreMAUI.ModCreateVehiclePage"
+              BackgroundColor="#3664D6"
              Title="Nowy Pojazd">
 
     <VerticalStackLayout Spacing="10"
+                         Padding="0,10,0,0"
                          VerticalOptions="Start"
                          HorizontalOptions="Center">
 
 
         <Border Stroke="Black"
         StrokeThickness="1"
-        Background="transparent"
+        BackgroundColor="White"
         Padding="10,0"
         WidthRequest="300"
         HorizontalOptions="Center">
             <Border.StrokeShape>
-                <RoundRectangle CornerRadius="3" />
+                <RoundRectangle CornerRadius="1" />
             </Border.StrokeShape>
             <Entry Text="{Binding plate}"
-                   FontAttributes="Bold"
-                   FontSize="18"
                 Placeholder="Numer rejestracyjny" 
                />
         </Border>
 
         <Border Stroke="Black"
         StrokeThickness="1"
-        Background="transparent"
+        BackgroundColor="White"
         Padding="10,0"     
         HorizontalOptions="Center"
                 WidthRequest="300">
             <Border.StrokeShape>
-                <RoundRectangle CornerRadius="3" />
+                <RoundRectangle CornerRadius="1" />
             </Border.StrokeShape>
             <Entry Text="{Binding vin}"
-                   FontAttributes="Bold"
-                   FontSize="18"
                 Placeholder="Numer VIN"
                   />
         </Border>
         
         <Border Stroke="Black"
         StrokeThickness="1"
-        Background="transparent"
+        BackgroundColor="White"
         Padding="10,0"     
         HorizontalOptions="Center"
                 WidthRequest="300">
             <Border.StrokeShape>
-                <RoundRectangle CornerRadius="3" />
+                <RoundRectangle CornerRadius="1" />
             </Border.StrokeShape>
             <Entry Text="{Binding mileage}"
-                   FontAttributes="Bold"
-                   FontSize="18"
                 Placeholder="Aktualny Przebieg"
                   />
         </Border>
 
-        <Button Command="{Binding CreateVehicleCommand}" Text="Prześlij" TextColor="Black" FontAttributes="Bold" FontSize="18" WidthRequest="300" CornerRadius="3" Margin="20">
+        <Button Command="{Binding CreateVehicleCommand}" Text="Prześlij" BackgroundColor="LightGreen" WidthRequest="300" CornerRadius="1" Margin="20">
             
         </Button>
 

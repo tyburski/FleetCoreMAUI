@@ -73,6 +73,8 @@
                Grid.Row="1"
                HorizontalOptions="Center"
                VerticalOptions="Center" />
+                <Image Source="warningsign.png" Margin="15" WidthRequest="30" HeightRequest="30" Grid.Row="1" Grid.Column="0" VerticalOptions="Start" HorizontalOptions="End" x:Name="notice"/>
+
 
                 <BoxView Grid.Column="1"
                  Grid.Row="1"
@@ -95,7 +97,7 @@
                Text="Pojazdy"
                HorizontalOptions="Center"
               VerticalOptions="Center" />
-                <Image Source="warningsign.png" Margin="10" WidthRequest="40" HeightRequest="40" Grid.Row="1" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="End" x:Name="warning"/>
+                <Image Source="warningsign.png" Margin="15" WidthRequest="30" HeightRequest="30" Grid.Row="1" Grid.Column="1" VerticalOptions="Start" HorizontalOptions="End" x:Name="warning"/>
 
                 <BoxView Grid.Row="2"
                  Color="#22459C"

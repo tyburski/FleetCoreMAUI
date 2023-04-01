@@ -41,5 +41,8 @@
     <ShellContent
         ContentTemplate="{DataTemplate local:ModUsersPage}"
         />
+    <ShellContent
+        ContentTemplate="{DataTemplate local:ModLogs}"
+        />
 
 </Shell>

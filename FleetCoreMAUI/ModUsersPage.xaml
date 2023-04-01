@@ -10,23 +10,9 @@
                 <DataTemplate >
 
                     <ViewCell>
-                        <StackLayout Padding="0,0,2,0">
-                            <StackLayout.Shadow>
-                                <Shadow Brush="Black"
-                                    Offset="10,10"
-                                    Radius="200"
-                                    Opacity="0.3"
-                                />
-                            </StackLayout.Shadow>
-                            <Border Stroke="#78A2CC"
-                                StrokeThickness="5"
-                                Background="transparent"
->
-                                <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="1" />
-                                </Border.StrokeShape>
 
-                                <Grid Padding="0" ColumnSpacing="0" RowSpacing="0">
+
+                        <Grid Padding="10,10,10,0" ColumnSpacing="0" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="0.3*"/>
@@ -35,31 +21,31 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="0.15*"/>
+                                        <ColumnDefinition Width="45"/>
                                     </Grid.ColumnDefinitions>
 
 
-                                    <BoxView Grid.Row="0" Grid.ColumnSpan="2" Margin="0" Color="White"/>
+                            <BoxView Grid.Row="0" Grid.ColumnSpan="3" Margin="0" Color="#22459C"/>
 
                                     <Label Grid.Row="0" Grid.Column="0" FontAttributes="Bold" FontSize="25" Padding="5,5,5,1" VerticalOptions="End" x:DataType="models:User" 
                        Text="{Binding fullName}"
                         />
-                                    <BoxView Grid.Row="2" Grid.ColumnSpan="2" Margin="0" Color="White"/>
+                            <BoxView Grid.Row="2" Grid.ColumnSpan="3" Margin="0" Color="#3664D6"/>
                                     <Label Grid.Row="2" Grid.ColumnSpan="2" FontAttributes="Bold" FontSize="18" Padding="5,0,0,5" VerticalOptions="Center" HorizontalOptions="Start" x:DataType="models:User" 
                        Text="{Binding Role}"
                         />
-                                    <StackLayout Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="#78A2CC" HeightRequest="2"></StackLayout>
+                                    <StackLayout Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="White" HeightRequest="2"></StackLayout>
 
 
-                                    <BoxView Grid.RowSpan="3" Grid.Column="2" Margin="0" Color="LightGray"/>
+                            <BoxView Grid.RowSpan="3" Grid.Column="2" Margin="0" Color="#22459C"/>
+                                    <BoxView Grid.RowSpan="3" Grid.Column="2" Margin="2" Color="LightGray"/>
 
 
                                     <ImageButton Grid.RowSpan="3" Grid.Column="2" HorizontalOptions="Center" HeightRequest="40"  Source="dots.png" x:DataType="models:User" Clicked="OpenMenu" ClassId="{Binding fullName}" AutomationId="{Binding Role}"/>
 
 
                                 </Grid>
-                            </Border>
-                        </StackLayout>
+                         
 
 
                     </ViewCell>

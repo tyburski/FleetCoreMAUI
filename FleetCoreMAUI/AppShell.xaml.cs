@@ -14,5 +14,6 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("modCreateUser", typeof(ModCreateUserPage));
         Routing.RegisterRoute("modUsers", typeof(ModUsersPage));
         Routing.RegisterRoute("modCreateVehicle", typeof(ModCreateVehiclePage));
+        Routing.RegisterRoute("modLogs", typeof(ModLogs));
     }
 }

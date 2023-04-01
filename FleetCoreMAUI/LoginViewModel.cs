@@ -93,7 +93,7 @@ namespace FleetCoreMAUI
             else
             {
                 popup.Close();
-                Application.Current.MainPage.DisplayAlert(null, "Nieprawidłowa nazwa użytkownika \n lub hasło", "Ok");
+                await Application.Current.MainPage.DisplayAlert("BŁĄD", "Nieprawidłowa nazwa użytkownika \n lub hasło", "Ok");
             }
         });
     }

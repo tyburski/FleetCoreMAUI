@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Views;
 using FleetCoreMAUI.Models;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Input;
@@ -9,59 +10,94 @@ namespace FleetCoreMAUI;
 
 public partial class VehiclesPage : ContentPage
 {
+    ObservableCollection<VehicleViewModel> list { get; set; } = new();
+
     public VehiclesPage()
     {
-        InitializeComponent();
-        
-        GetVehicles();
-        //BindingContext = new VehiclesViewModel();
+        InitializeComponent();       
     }
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        await Render();
+    }
+    async Task Render()
+    {
+        var popup = new Spinner();
+        Application.Current.MainPage.ShowPopup(popup);
 
+        if (await GetVehicles() is true)
+        {
+            ColList.ItemsSource = list;
+            await Task.Delay(1000);
+            popup.Close();
+        }
+    }
     async void RefuelClicked(object sender, EventArgs args)
     {
         var button = (ImageButton)sender;
         var plate = button.ClassId;
+        var mileage = button.AutomationId;
 
         string result = await DisplayPromptAsync($"{plate}:Tankowanie", "Podaj ilość litrów:", "Dalej","Anuluj", keyboard: Keyboard.Numeric);
         if(result!=null)
         {
-            string result2 = await DisplayPromptAsync($"{plate}:Tankowanie", "Podaj przebieg:", "Prześlij", "Anuluj", keyboard: Keyboard.Numeric);
-            if(result2!=null)
+            if (!result.Equals(String.Empty))
             {
-                bool resParse = Double.TryParse(result, out double resultParsed);
-                bool res2Parse = Int64.TryParse(result2, out long result2Parsed);
-
-                
-
-                if (resParse && res2Parse)
+                string result2 = await DisplayPromptAsync($"{plate}:Tankowanie", "Podaj przebieg:", "Prześlij", "Anuluj", keyboard: Keyboard.Numeric);
+                if (result2!=null)
                 {
-                    var refuel = new RefuelModel()
+                    if (!result2.Equals(String.Empty))
                     {
-                        Plate = plate.ToString(),
-                        Mileage = result2Parsed,
-                        Quantity = resultParsed,
-                        userId = SecureStorage.Default.GetAsync("userId").Result
-                        
+                        bool resParse = Double.TryParse(result, out double resultParsed);
+                        bool res2Parse = Int64.TryParse(result2, out long result2Parsed);
+                        Int64.TryParse(mileage, out long mileageParsed);
 
-                    };
-                    var popup = new Spinner();
-                    Application.Current.MainPage.ShowPopup(popup);
-                    if (await Refuel(refuel) is true)
-                    {
-                        popup.Close();
-                        await Application.Current.MainPage.DisplayAlert(null, $"Pomyślnie zapisano tankowanie dla pojazdu {plate}", "Ok");
-                        
+                        if (resParse && res2Parse)
+                        {
+
+                            if (result2Parsed > mileageParsed)
+                            {
+                                var popup = new Spinner();
+                                Application.Current.MainPage.ShowPopup(popup);
+                                var refuel = new RefuelModel()
+                                {
+                                    Plate = plate.ToString(),
+                                    Mileage = result2Parsed,
+                                    Quantity = resultParsed,
+                                    userId = SecureStorage.Default.GetAsync("userId").Result
+                                };
+
+                                if (await Refuel(refuel) is true)
+                                {
+                                    popup.Close();
+                                    await Application.Current.MainPage.DisplayAlert("SUKCES", $"Pomyślnie zapisano tankowanie dla pojazdu {plate}", "Ok");
+                                    OnAppearing();
+                                }
+                                else
+                                {
+                                    popup.Close();
+                                    await Application.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                                }
+                            }
+                            else
+                            {
+                                await Application.Current.MainPage.DisplayAlert("BŁĄD", "Podany przebieg jest \n niższy od aktualnego", "Ok");
+                            }
+
+                        }
                     }
                     else
                     {
-                        popup.Close();
-                        Application.Current.MainPage.DisplayAlert(null, "Błąd", "Ok");
+                        await Application.Current.MainPage.DisplayAlert("BŁĄD", "Pole nie może być puste", "Ok");
                     }
                 }
-                
             }
-        }
-        
+            else
+            {
+                await Application.Current.MainPage.DisplayAlert("BŁĄD", "Pole nie może być puste", "Ok");
+            }
+        }       
     }
     async Task<bool> Refuel(RefuelModel model)
     {
@@ -90,23 +126,56 @@ public partial class VehiclesPage : ContentPage
     {
         var button = (ImageButton)sender;
         var plate = button.ClassId;
-        string action = await App.Current.MainPage.DisplayActionSheet($"{plate}:Menu pojazdu", "Anuluj", null, "Wydarzenia", "Bieżące naprawy", "Historia napraw");
+
+        var role = SecureStorage.GetAsync("role").Result;
+        if (role.Equals("User"))
+        {
+                await Shell.Current.GoToAsync($"vehicleDetails?plate={plate}");
+        }
+        else
+        {
+            string action = await App.Current.MainPage.DisplayActionSheet($"{plate}:Menu pojazdu", "Anuluj", null, "Szczegóły pojazdu", "Edytuj pojazd", "Usuń pojazd");
+            if(action.Equals("Szczegóły pojazdu"))
+            {
+                await Shell.Current.GoToAsync($"vehicleDetails?plate={plate}");
+            }
+        }   
     }
-    public async Task GetVehicles()
+    public async Task<bool> GetVehicles()
     {
+       
         var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
         var http = devSslHelper.HttpClient;
         try
         {
             var response = await http.GetAsync(devSslHelper.DevServerRootUrl + "/api/vehicle");
             var result = await response.Content.ReadAsStringAsync();
-            var vehicles = JsonConvert.DeserializeObject<List<Vehicle>>(result);
-            VehicleList.ItemsSource = vehicles.ToList();
-           
+            var vehicles = JsonConvert.DeserializeObject<List<VehicleViewModel>>(result);
+
+
+            foreach (VehicleViewModel v in vehicles)
+            {
+                foreach (Event e in v.Events)
+                {
+                    var checkDate = e.Date.Subtract(DateTime.Now);
+
+                    if (checkDate.TotalDays <= 14)
+                    {
+                        v.isWarning = true;
+                    }
+                    else v.isWarning = false;
+                }
+            }
+
+            list = new ObservableCollection<VehicleViewModel>(vehicles);
+
+            
+            return true;
+            
         }
         catch
         {
-
+            return false;
         }
     }
    

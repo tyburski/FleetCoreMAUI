@@ -5,19 +5,70 @@
              x:Class="FleetCoreMAUI.ModUsersPage"
              Title="Użytkownicy">
     <ScrollView>
-        <ListView x:Name="list">
+        <ListView x:Name="list" SelectionMode="None" HasUnevenRows="True" SeparatorVisibility="None">
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="models:User">
+                <DataTemplate >
+
                     <ViewCell>
-                        <Label 
+                        <StackLayout Padding="0,0,2,0">
+                            <StackLayout.Shadow>
+                                <Shadow Brush="Black"
+                                    Offset="10,10"
+                                    Radius="200"
+                                    Opacity="0.3"
+                                />
+                            </StackLayout.Shadow>
+                            <Border Stroke="#78A2CC"
+                                StrokeThickness="5"
+                                Background="transparent"
+>
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="1" />
+                                </Border.StrokeShape>
+
+                                <Grid Padding="0" ColumnSpacing="0" RowSpacing="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="0.3*"/>
+                                        <RowDefinition Height="0.3*"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="0.15*"/>
+                                    </Grid.ColumnDefinitions>
+
+
+                                    <BoxView Grid.Row="0" Grid.ColumnSpan="2" Margin="0" Color="White"/>
+
+                                    <Label Grid.Row="0" Grid.Column="0" FontAttributes="Bold" FontSize="25" Padding="5,5,5,1" VerticalOptions="End" x:DataType="models:User" 
                        Text="{Binding fullName}"
                         />
+                                    <BoxView Grid.Row="2" Grid.ColumnSpan="2" Margin="0" Color="White"/>
+                                    <Label Grid.Row="2" Grid.ColumnSpan="2" FontAttributes="Bold" FontSize="18" Padding="5,0,0,5" VerticalOptions="Center" HorizontalOptions="Start" x:DataType="models:User" 
+                       Text="{Binding Role}"
+                        />
+                                    <StackLayout Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="#78A2CC" HeightRequest="2"></StackLayout>
+
+
+                                    <BoxView Grid.RowSpan="3" Grid.Column="2" Margin="0" Color="LightGray"/>
+
+
+                                    <ImageButton Grid.RowSpan="3" Grid.Column="2" HorizontalOptions="Center" HeightRequest="40"  Source="dots.png" x:DataType="models:User" Clicked="OpenMenu" ClassId="{Binding fullName}" AutomationId="{Binding Role}"/>
+
+
+                                </Grid>
+                            </Border>
+                        </StackLayout>
+
+
                     </ViewCell>
-                    
+
+
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
     </ScrollView>
-    
+
 
 </ContentPage>

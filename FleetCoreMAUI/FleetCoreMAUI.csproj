@@ -51,16 +51,22 @@
 	<ItemGroup>
 	  <None Remove="Platforms\Android\Resources\raw\cert.cer" />
 	  <None Remove="Resources\Fonts\Quicksand-VariableFont_wght.ttf" />
+	  <None Remove="Resources\Fonts\SegoeWP.ttf" />
+	  <None Remove="Resources\Images\car.png" />
+	  <None Remove="Resources\Images\dollarplus.png" />
+	  <None Remove="Resources\Images\dollarview.png" />
 	  <None Remove="Resources\Images\dots.png" />
 	  <None Remove="Resources\Images\exit.svg" />
 	  <None Remove="Resources\Images\flota.png" />
 	  <None Remove="Resources\Images\fuel.svg" />
+	  <None Remove="Resources\Images\info.png" />
 	  <None Remove="Resources\Images\money.svg" />
-	  <None Remove="Resources\Images\notice.svg" />
-	  <None Remove="Resources\Images\notice1.svg" />
+	  <None Remove="Resources\Images\noticeview.png" />
+	  <None Remove="Resources\Images\pencil.png" />
+	  <None Remove="Resources\Images\settings.png" />
 	  <None Remove="Resources\Images\star.png" />
-	  <None Remove="Resources\Images\truck.svg" />
-	  <None Remove="Resources\Images\warning.svg" />
+	  <None Remove="Resources\Images\user.png" />
+	  <None Remove="Resources\Images\warningSign.png" />
 	  <None Remove="Resources\Images\yellowstar.png" />
 	</ItemGroup>
 
@@ -70,6 +76,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="DoneRapairsPage.xaml.cs">
+	    <DependentUpon>DoneRapairsPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="VehicleDetailsPage.xaml.cs">
+	    <DependentUpon>VehicleDetailsPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="RepairsPage.xaml.cs">
+	    <DependentUpon>RepairsPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="EventsPage.xaml.cs">
+	    <DependentUpon>EventsPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="ModCreateVehiclePage.xaml.cs">
 	    <DependentUpon>ModCreateVehiclePage.xaml</DependentUpon>
 	  </Compile>
@@ -92,6 +110,18 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="BonusPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="DoneRapairsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="VehicleDetailsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="RepairsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="EventsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="ModCreateVehiclePage.xaml">

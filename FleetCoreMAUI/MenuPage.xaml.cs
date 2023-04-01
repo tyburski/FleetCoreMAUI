@@ -2,6 +2,9 @@
 using FleetCoreMAUI.Models;
 using Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
@@ -15,17 +18,26 @@ namespace FleetCoreMAUI;
 public partial class MenuPage : ContentPage
 {
 
-
+    public int isEndingCounter = 0;
     public MenuPage()
     {
         InitializeComponent();
     }
 
-    protected override void OnNavigatedTo(NavigatedToEventArgs e)
+    protected override async void OnAppearing()
     {
-        base.OnNavigatedTo(e);
+        base.OnAppearing();
         BindingContext = new MenuViewModel();
+        //isEndingCounter = 0;
         ModButton();
+        await GetVehicles();
+
+        if (isEndingCounter > 0)
+        {
+            warning.IsVisible = true;
+        }
+        else warning.IsVisible = false;
+
     }
     async Task ModButton()
     {
@@ -46,10 +58,39 @@ public partial class MenuPage : ContentPage
         }
         
     }
+    public async Task GetVehicles()
+    {
 
-    
+        var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
+        var http = devSslHelper.HttpClient;
+        try
+        {
+            var response = await http.GetAsync(devSslHelper.DevServerRootUrl + "/api/vehicle");
+            var result = await response.Content.ReadAsStringAsync();
+            var vehicles = JsonConvert.DeserializeObject<List<Vehicle>>(result);
 
-    
+            foreach(Vehicle v in vehicles)
+            {                
+                foreach(Event e in v.Events)
+                {
+                    var checkDate = e.Date.Subtract(DateTime.Now);
+
+                    if (checkDate.TotalDays <= 14)
+                    {
+                        isEndingCounter++;
+                    }
+                }
+            }
+        }
+        catch
+        {
+        }
+    }
+
+
+
+
+
 
 }
 

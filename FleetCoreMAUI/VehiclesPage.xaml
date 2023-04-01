@@ -4,83 +4,76 @@
              xmlns:models="clr-namespace:FleetCoreMAUI.Models"
              xmlns:local="clr-namespace:FleetCoreMAUI"
              x:Class="FleetCoreMAUI.VehiclesPage"
-             Shell.NavBarHasShadow="true">
-    <Shell.TitleView>
-        <Label Text="LISTA POJAZDÓW" FontSize="25" FontAttributes="Bold" VerticalOptions="Center"/>
-    </Shell.TitleView>
-    
-    <ScrollView>
-        <ListView x:Name="VehicleList" SelectionMode="None" HasUnevenRows="True" SeparatorVisibility="None">
-            <ListView.ItemTemplate>
+             Title="Lista Pojazdów"
+             BackgroundColor="White">
+
+        <CollectionView x:Name="ColList" SelectionMode="None">
+            <CollectionView.ItemTemplate>
                 <DataTemplate >
 
-                    <ViewCell>
-                        <StackLayout Padding="5">
-                            <StackLayout.Shadow>
-                                <Shadow Brush="Black"
-                                    Offset="10,10"
-                                    Radius="200"
-                                    Opacity="0.3"
-                                />
-                            </StackLayout.Shadow>
-                            <Border Stroke="#78A2CC"
-                                StrokeThickness="5"
-                                Background="transparent"
->
-                                <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="3" />
-                                </Border.StrokeShape>
+                <StackLayout Padding="10,0,10,10" BackgroundColor="White" >
+
+                   
                                 
                                 <Grid Padding="0" ColumnSpacing="0" RowSpacing="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="0.3*"/>
+                                        <RowDefinition Height="0.3*"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="0.3*"/>
-                                        <ColumnDefinition Width="0.3*"/>
-                                        <ColumnDefinition Width="0.25*"/>
+                            <ColumnDefinition Width="20"/>
+                            <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="50"/>
                                     </Grid.ColumnDefinitions>
 
 
-                                    <BoxView Grid.Row="0" Grid.Column="0" Margin="0" Color="White"/>
+                        <BoxView Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="0" Color="#22459C"/>
 
-                                    <Label Grid.Row="0" Grid.Column="0" FontAttributes="Bold" FontSize="25" Margin="5" x:DataType="models:Vehicle" 
+
+                        <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" Padding="2">
+                            <Image Source="warningsign.png" Margin="2" WidthRequest="30" HeightRequest="30" VerticalOptions="Center" HorizontalOptions="Center" x:DataType="models:VehicleViewModel" IsVisible="{Binding isWarning}"/>
+                            <Label FontAttributes="Bold" FontSize="30" Padding="0" VerticalOptions="End" x:DataType="models:VehicleViewModel" 
                        Text="{Binding Plate}"
                         />
+                            
+                        </StackLayout>
+                        
+                        <BoxView Grid.RowSpan="3" Grid.Column="2" Margin="0" Color="#22459C"/>
+                            <Label Grid.Row="0" Grid.Column="2" FontAttributes="Bold" Padding="2" VerticalOptions="End" x:DataType="models:VehicleViewModel" 
+                       Text="{Binding Mileage}"
+                        />
+                        <StackLayout Grid.Row="1" Grid.ColumnSpan="4" BackgroundColor="White" HeightRequest="2"/>
 
 
-                                    <BoxView Grid.Row="1" Grid.Column="0" Margin="0" Color="White"></BoxView>
-                                    <Label Grid.Row="1" Grid.Column="0" FontAttributes="None" FontSize="18" Margin="5" x:DataType="models:Vehicle"
+                        <BoxView Grid.Row="2" Grid.ColumnSpan="3" Margin="0" Color="#3664D6"></BoxView>
+                            <Label Grid.Row="2" Grid.ColumnSpan="3" FontAttributes="None" Padding="5,2,2,2" x:DataType="models:VehicleViewModel"
                        Text="{Binding VIN}"
                         />
-                                    <BoxView Grid.RowSpan="2" Grid.Column="1" Margin="0" Color="White" ></BoxView>
-                                    <Image Grid.RowSpan="2" Grid.Column="1" Source="warning.svg" Scale="1" HorizontalOptions="Center" HeightRequest="30" IsVisible="false"/>
-
-                                    <BoxView Grid.RowSpan="2" Grid.Column="2" Margin="0" Color="LightGreen">
+                        <BoxView Grid.RowSpan="3" Grid.Column="3" Margin="0" Color="#22459C"/>
+                        <BoxView Grid.RowSpan="3" Grid.Column="3" Margin="5" Color="LightGray">
 
                                     </BoxView>
-                                    <ImageButton Grid.RowSpan="2" Grid.Column="2" Source="fuel.svg" HorizontalOptions="Center" HeightRequest="45" Clicked="RefuelClicked" x:DataType="models:Vehicle" ClassId="{Binding Plate}"/>
+                                    <ImageButton Grid.RowSpan="3" Grid.Column="3" Source="fuel.svg" HorizontalOptions="Center" HeightRequest="50" Clicked="RefuelClicked" x:DataType="models:VehicleViewModel" ClassId="{Binding Plate}" AutomationId="{Binding Mileage}"/>
 
 
-
-                                    <BoxView Grid.RowSpan="2" Grid.Column="3" Margin="0" Color="LightGray"/>
-
-
-                                    <ImageButton Grid.RowSpan="2" Grid.Column="3" HorizontalOptions="Center" HeightRequest="40" Clicked="OpenMenu" Source="dots.png" x:DataType="models:Vehicle" ClassId="{Binding Plate}"/>
+                        <BoxView Grid.RowSpan="3" Grid.Column="4" Margin="0" Color="#22459C"/>
+                        <BoxView Grid.RowSpan="3" Grid.Column="4" Margin="0,5,5,5" Color="LightGray"/>
 
 
-                                </Grid>
-                            </Border>
+                        <ImageButton Grid.RowSpan="3" Grid.Column="4" HorizontalOptions="Start"  VerticalOptions="Center" HeightRequest="40" Clicked="OpenMenu" Source="dots.png" x:DataType="models:VehicleViewModel" ClassId="{Binding Plate}"/>
+                    </Grid>
+                            
                         </StackLayout>
                        
                        
-                    </ViewCell>
+  
                     
 
                 </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
-    </ScrollView>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+ 
 </ContentPage>

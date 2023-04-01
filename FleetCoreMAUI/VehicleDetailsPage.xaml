@@ -1,0 +1,286 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:local="clr-namespace:FleetCoreMAUI"
+             xmlns:models="clr-namespace:FleetCoreMAUI.Models"
+             x:Class="FleetCoreMAUI.VehicleDetailsPage"
+             BackgroundColor="White"
+             Shell.NavBarIsVisible="True"
+             Title="Szczegóły Pojazdu">
+   
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackLayout Grid.Row="0">
+
+            
+            <Grid Padding="10,0,10,10" ColumnSpacing="0" RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="0.3*"/>
+                    <RowDefinition Height="0.3*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+
+                <BoxView Grid.Row="0" Grid.Column="0" Margin="0" Color="#22459C"/>
+
+                <Label Grid.Row="0" Grid.Column="0" FontAttributes="Bold" FontSize="30" Padding="5,5,5,1" VerticalOptions="End" 
+                       x:Name="Plate"
+                        />
+                <BoxView Grid.RowSpan="3" Grid.Column="1" Margin="0" Color="#22459C"/>
+                <Label Grid.Row="0" Grid.Column="1" FontAttributes="Bold" Padding="5,0,5,1" VerticalOptions="End"
+                       x:Name="Mileage"
+                        />
+                <StackLayout Grid.Row="1" Grid.ColumnSpan="2" BackgroundColor="White" HeightRequest="2"></StackLayout>
+
+
+                <BoxView Grid.Row="2" Grid.ColumnSpan="2" Margin="0" Color="#3664D6"></BoxView>
+                <Label Grid.Row="2" Grid.ColumnSpan="2" FontAttributes="None" Padding="5,5,5,5"
+                       x:Name="VIN"
+                        />
+            </Grid>
+        
+    </StackLayout>
+        <StackLayout Grid.Row="1">
+            
+
+
+                <Grid ColumnSpacing="5" BackgroundColor="White" HorizontalOptions="FillAndExpand" Padding="9,0,9,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40"/>
+                    </Grid.RowDefinitions>
+
+
+                <Button x:Name="Button1" BackgroundColor="#22459C" Grid.Column="0" Text="Wydarzenia" FontSize="15" Margin="1"  Padding="5" Clicked="Button1_Clicked"/>
+
+                <Button x:Name="Button2" Grid.Column="1" Text="Bieżące Naprawy" FontSize="15" Margin="1" Padding="5" Clicked="Button2_Clicked"/>
+
+                <Button x:Name="Button3" Grid.Column="2" Text="Historia Napraw" FontSize="15" Margin="1" Padding="5" Clicked="Button3_Clicked"/>
+                </Grid>
+            
+        </StackLayout>
+
+        <Button Grid.Row="2" x:Name="createRepairButton" Text="Dodaj Usterkę" BackgroundColor="LightGreen" Margin="10,10,10,0" Clicked="CreateRepair"/>
+        <ScrollView Grid.Row="3"  Margin="10">
+
+            <StackLayout BackgroundColor="#3664D6" Padding="0">
+                <CollectionView x:Name="Events" x:DataType="models:EventViewModel" SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1.9*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="35"/>
+
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <BoxView  Grid.ColumnSpan="3" Margin="2,2,2,5" x:DataType="models:EventViewModel" Color="{Binding color}"/>
+                                <Label Grid.Column="0" Padding="10,5,5,5" VerticalOptions="Start" Margin="2,15,0,15" x:DataType="models:EventViewModel" 
+                       Text="{Binding Content}"/>
+                                <Label Grid.Column="1" Padding="10,5,5,5" VerticalOptions="Start" Margin="2,15,0,15" x:DataType="models:EventViewModel" 
+                       Text="{Binding ConvertedDate}"/>
+                                <BoxView Grid.Column="2" Color="LightGray" Margin="5,5,5,8"/>
+                                <ImageButton Source="pencil.png" HeightRequest="30" Grid.Column="2" Clicked="OnDateClicked" x:DataType="models:EventViewModel" ClassId="{Binding Id}"/>
+
+
+
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+                <StackLayout x:Name="DateChange" IsVisible="false">
+                    <Grid Padding="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.9*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <BoxView Grid.ColumnSpan="2" Margin="2,2,2,5" Color="#22459C"/>
+                        <Label x:Name="content" Grid.Column="0" Padding="10,5,5,5" VerticalOptions="Start" Margin="2,15,0,15" x:DataType="models:EventViewModel" 
+                       />
+                        <Label x:Name="date" Grid.Column="1" Padding="10,5,5,5" VerticalOptions="Start" Margin="2,15,0,15" x:DataType="models:EventViewModel" 
+                       />
+                        
+
+                        <Label Grid.Column="0" Grid.Row="1" Padding="10,5,5,5" VerticalOptions="Start" Margin="2,15,0,15" x:DataType="models:EventViewModel" 
+                       Text="Wybierz Datę"/>
+                        <DatePicker x:Name="picker" Grid.Column="1" Grid.Row="1" FontSize="20" TextColor="White" Format="dd/MM/yyyy" MinimumDate="01/01/2023" HorizontalOptions="Center" VerticalOptions="Center" x:DataType="models:EventViewModel" 
+                       DateSelected="OnDateSelected"/>
+
+                        <Button BackgroundColor="LightGreen" Grid.Row="2" Grid.ColumnSpan="2" Clicked="OnSaveDateClicked" Text="Zapisz" Margin="4,0,4,10"/>
+                        <Button BackgroundColor="#D32B47" Grid.Row="3" Grid.ColumnSpan="2" Clicked="OnCancelDateClicked" Text="Anuluj" Margin="4,0,4,0"/>
+
+                    </Grid>
+                    
+                </StackLayout>
+
+                
+                <Grid x:Name="Repairs">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    
+
+                    <ListView Grid.Row ="1" x:Name="RepairsList" SelectionMode="None" HasUnevenRows="True" SeparatorVisibility="None">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                                <ViewCell>
+                                    <Grid Margin="0" Padding="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="40"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="70"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <BoxView  Grid.ColumnSpan="5" Grid.RowSpan="4" Margin="0" Color="#22459C"/>
+                                        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Padding="2,0,0,0" VerticalOptions="Start" Margin="0"
+                       Text="Rozpoczęto przez:" FontSize="15"/>
+                                        <Label Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Padding="2,0,0,0" VerticalOptions="Start" Margin="0" x:DataType="models:RepairViewModel"
+                       Text="{Binding CreatedBy}" FontSize="15"/>
+                                        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Padding="2,0,0,0" VerticalOptions="Start" Margin="0"
+                       Text="dnia:" FontSize="15"/>
+                                        <Label Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Padding="2,0,0,0" VerticalOptions="Start" Margin="0" x:DataType="models:RepairViewModel"
+                       Text="{Binding CreatedAt}" FontSize="15"/>
+                                        <Button Grid.RowSpan="2" Grid.Column="4" Text="Zakończ" Margin="2" Padding="0" FontSize="15" BackgroundColor="LightGray" Clicked="FinishRepair" x:DataType="models:RepairViewModel" ClassId="{Binding Id}"/>
+
+                                        <StackLayout Grid.Row="2" Grid.ColumnSpan="5" Margin="0" BackgroundColor="White" HeightRequest="1"/>
+
+                                        <Label  WidthRequest="400" Grid.ColumnSpan="5" Grid.Row="3" Padding="12,2,10,2" x:DataType="models:RepairViewModel"
+                       Text="{Binding Content}"/>
+   
+                                        
+
+                                    </Grid>
+                                </ViewCell>
+                            
+                                
+                            
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                </Grid>
+                <StackLayout x:Name="RepairCreate" IsVisible="false">
+                    <Grid Padding="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        
+
+                        <Editor AutoSize="TextChanges" MaxLength="100" Grid.Row="0" x:Name="repairEntry" VerticalOptions="Center" Margin="4" Placeholder="Wpisz Treść" 
+                       />
+
+                        <Button BackgroundColor="LightGreen" Grid.Row="1" Grid.ColumnSpan="2" Clicked="OnCreateRepairClicked" Text="Prześlij" Margin="4,10,4,10"/>
+                        <Button BackgroundColor="#D32B47" Grid.Row="2" Grid.ColumnSpan="2" Clicked="OnCancelRepairClicked" Text="Anuluj" Margin="4,0,4,0"/>
+
+                    </Grid>
+
+                </StackLayout>
+
+                <Grid x:Name="DoneRepairs">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+
+                    <ListView Grid.Row ="1" x:Name="DoneRepairsList" SelectionMode="None" HasUnevenRows="True" SeparatorVisibility="None">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Grid Margin="0" Padding="5">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto"/>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="40"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="*"/>
+                                        </Grid.RowDefinitions>
+
+                                        <BoxView  Grid.ColumnSpan="4" Grid.RowSpan="6" Margin="0" Color="#22459C"/>
+                                        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Padding="2,0,0,0" VerticalOptions="Start" Margin="0"
+                       Text="Rozpoczęto przez:" FontSize="15"/>
+                                        <Label Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Padding="2,0,2,0" VerticalOptions="Start" Margin="0" x:DataType="models:RepairViewModel"
+                       Text="{Binding CreatedBy}" FontSize="15" HorizontalOptions="Start"/>
+                                        
+                                        <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" Padding="2,0,0,0" VerticalOptions="Start" Margin="0"
+                       Text="dnia:" FontSize="15"/>
+                                        <Label Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" Padding="2,0,0,0" VerticalOptions="Start" Margin="0" x:DataType="models:RepairViewModel"
+                       Text="{Binding CreatedAt}" FontSize="15" HorizontalOptions="Start"/>
+                                        
+
+                                        <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Padding="2,0,0,0" VerticalOptions="Start" Margin="0"
+                       Text="Zakończono przez:" FontSize="15"/>
+                                        <Label Grid.Row="2" Grid.Column="2" Grid.ColumnSpan="2" Padding="2,0,0,0" VerticalOptions="Start" Margin="0" x:DataType="models:RepairViewModel"
+                       Text="{Binding FinishedBy}" FontSize="15"/>
+                                        <Label Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"  Padding="2,0,0,0" VerticalOptions="Start" Margin="0"
+                       Text="dnia:" FontSize="15" HorizontalOptions="Start"/>
+                                        <Label Grid.Row="3" Grid.Column="2" Grid.ColumnSpan="2" Padding="2,0,0,0" VerticalOptions="Start" Margin="0" x:DataType="models:RepairViewModel"
+                       Text="{Binding FinishAt}" FontSize="15" HorizontalOptions="Start"/>
+                                        
+                                        <StackLayout Grid.Row="4" Grid.ColumnSpan="4" Margin="0" BackgroundColor="White" HeightRequest="1"/>
+
+                                        <Label  WidthRequest="400" Grid.ColumnSpan="4" Grid.Row="5" Padding="12,2,10,2" x:DataType="models:RepairViewModel"
+                       Text="{Binding Content}"/>
+
+
+
+                                    </Grid>
+                                </ViewCell>
+
+
+
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+
+            </StackLayout>
+            
+        </ScrollView>
+        
+
+    </Grid>
+</ContentPage>

@@ -19,13 +19,11 @@
         WidthRequest="300"
         HorizontalOptions="Center">
             <Border.StrokeShape>
-                <RoundRectangle CornerRadius="3" />
+                <RoundRectangle CornerRadius="1" />
             </Border.StrokeShape>
             <Entry x:Name="username"
                    Text="{Binding username}"
-                   FontAttributes="Bold"
-                   FontSize="18"
-                Placeholder="Nazwa użytkownika" 
+                    Placeholder="Nazwa użytkownika" 
                />
         </Border>
 
@@ -36,18 +34,16 @@
         HorizontalOptions="Center"
                 WidthRequest="300">
             <Border.StrokeShape>
-                <RoundRectangle CornerRadius="3" />
+                <RoundRectangle CornerRadius="1" />
             </Border.StrokeShape>
             <Entry x:Name="password"
                    Text="{Binding password}"
-                   FontAttributes="Bold"
-                   FontSize="18"
-                Placeholder="Hasło"
+                   Placeholder="Hasło"
                    IsPassword="true"
                   />
         </Border>
 
-        <Button Command="{Binding LoginCommand}" Text="Zaloguj" TextColor="Black" FontAttributes="Bold" FontSize="18" WidthRequest="300" CornerRadius="3" Margin="20">
+        <Button Command="{Binding LoginCommand}" Text="Zaloguj" WidthRequest="300" Margin="20">
             
         </Button>
 

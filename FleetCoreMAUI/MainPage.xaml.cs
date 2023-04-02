@@ -1,18 +1,19 @@
 ﻿
 using FleetCoreMAUI.Models;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using System.Windows.Input;
+using static System.Net.WebRequestMethods;
 
 namespace FleetCoreMAUI;
 
 
 public partial class MainPage : ContentPage
 {
-
-
     public MainPage()
     {
         InitializeComponent();
@@ -36,13 +37,33 @@ public partial class MainPage : ContentPage
         var id = await SecureStorage.Default.GetAsync("userId");
         var fullname = await SecureStorage.Default.GetAsync("fullname");
         var role = await SecureStorage.Default.GetAsync("role");
+        var notice = await SecureStorage.Default.GetAsync("notice");
 
-        if (id != null && fullname != null && role != null)
+        if (id != null && fullname != null && role != null && notice != null)
         {
-            return true;
+            using (var http = new HttpClient())
+            {
+                try
+                {
+                    var json = JsonConvert.SerializeObject(id);
+                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await http.PostAsync("https://primasystem.pl/api/account/validate", content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        
+                        return true;
+                    }
+                    else return false;
+                }
+                catch
+                {
+                    
+                    return false;
+                }
+            }          
         }
         else return false;
-
     }
 }
 

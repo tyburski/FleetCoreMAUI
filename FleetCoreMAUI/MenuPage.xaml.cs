@@ -19,11 +19,12 @@ public partial class MenuPage : ContentPage
 {
 
     public int isEndingCounter = 0;
+    public DateTime lastNoticeDate;
+    public bool noticesExist = false;
     public MenuPage()
     {
         InitializeComponent();
     }
-
     protected override async void OnAppearing()
     {
         base.OnAppearing();
@@ -31,12 +32,19 @@ public partial class MenuPage : ContentPage
         isEndingCounter = 0;
         ModButton();
         await GetVehicles();
-
         if (isEndingCounter > 0)
         {
             warning.IsVisible = true;
         }
         else warning.IsVisible = false;
+
+        noticesExist = false;
+        await GetNotices();
+        if (!lastNoticeDate.ToString("dd/MM/yyyy HH:mm").Equals(await SecureStorage.Default.GetAsync("notice")) && noticesExist)
+        {
+            notice.IsVisible = true;
+        }
+        else notice.IsVisible = false;
 
     }
     async Task ModButton()
@@ -60,39 +68,65 @@ public partial class MenuPage : ContentPage
     }
     public async Task GetVehicles()
     {
-
-        var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-        var http = devSslHelper.HttpClient;
-        try
+        using(var http = new HttpClient())
         {
-            var response = await http.GetAsync(devSslHelper.DevServerRootUrl + "/api/vehicle");
-            var result = await response.Content.ReadAsStringAsync();
-            var vehicles = JsonConvert.DeserializeObject<List<Vehicle>>(result);
+            try
+            {
+                var response = await http.GetAsync("https://primasystem.pl/api/vehicle");
+                var result = await response.Content.ReadAsStringAsync();
+                var vehicles = JsonConvert.DeserializeObject<List<Vehicle>>(result);
 
-            foreach(Vehicle v in vehicles)
-            {                
-                foreach(Event e in v.Events)
+                foreach (Vehicle v in vehicles)
                 {
-                    var checkDate = e.Date.Subtract(DateTime.Now);
-
-                    if (checkDate.TotalDays <= 14 || e.Date<=DateTime.Now)
+                    foreach (Event e in v.Events)
                     {
-                        isEndingCounter++;
-                        Debug.WriteLine(e.Date);
+                        var checkDate = e.Date.Subtract(DateTime.Now);
+
+                        if (checkDate.TotalDays <= 14 || e.Date <= DateTime.Now)
+                        {
+                            isEndingCounter++;
+                            Debug.WriteLine(e.Date);
+                        }
                     }
                 }
             }
-        }
-        catch
-        {
+            catch
+            {
+            }
         }
     }
+    public async Task GetNotices()
+    {
+        using(var http = new HttpClient())
+        {
+            try
+            {
+                var response = await http.GetAsync("https://primasystem.pl/api/organization/getnotices");
 
+                var resString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<List<Notice>>(resString);
 
+                if (response.IsSuccessStatusCode)
+                {
+                    if (result.Count > 0)
+                    {
+                        foreach (Notice n in result)
+                        {
+                            n.ConvertedDate = n.CreatedAt.ToString("dd/MM/yyyy");
+                        }
+                        var l = result.OrderByDescending(x => x.CreatedAt);
+                        lastNoticeDate = l.First().CreatedAt;
+                        noticesExist= true;
+                    }
+                    else noticesExist = false;                  
+                }
+            }
+            catch
+            {
 
-
-
-
+            }
+        }
+    }
 }
 
 

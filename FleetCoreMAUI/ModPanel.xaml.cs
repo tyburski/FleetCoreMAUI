@@ -12,8 +12,6 @@ namespace FleetCoreMAUI;
 
 public partial class ModPanel : ContentPage
 {
-
-
     public ModPanel()
     {
         InitializeComponent();

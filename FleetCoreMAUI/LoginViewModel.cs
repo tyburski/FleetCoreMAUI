@@ -43,42 +43,47 @@ namespace FleetCoreMAUI
         }
         public async Task<bool> Login()
         {
-            var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-            var http = devSslHelper.HttpClient;
-
-            try
+            using(var http = new HttpClient())
             {
-                string json = await Task.Run(() => JsonConvert.SerializeObject( new LoginModel()
+                try
                 {
-                    UserName = username,
-                    Password = password
-                }));
-                
-                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/account/login", content);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = await response.Content.ReadAsStringAsync();
-                    if(result!=null)
+                    string json = await Task.Run(() => JsonConvert.SerializeObject(new LoginModel()
                     {
-                        var datas = JsonConvert.DeserializeObject<Dictionary<int, string>>(result);
+                        UserName = username,
+                        Password = password
+                    }));
 
-                        await SecureStorage.Default.SetAsync("fullname", datas[0]);
-                        await SecureStorage.Default.SetAsync("role", datas[1]);
-                        await SecureStorage.Default.SetAsync("userId", datas[2]);
+                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await http.PostAsync("https://primasystem.pl/api/account/login", content);
 
-                        return true;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var result = await response.Content.ReadAsStringAsync();
+                        if (result != null)
+                        {
+                            var datas = JsonConvert.DeserializeObject<Dictionary<int, string>>(result);
+
+                            await SecureStorage.Default.SetAsync("fullname", datas[0]);
+                            await SecureStorage.Default.SetAsync("role", datas[1]);
+                            await SecureStorage.Default.SetAsync("userId", datas[2]);
+                            await SecureStorage.Default.SetAsync("notice", DateTime.Now.ToString("dd/MM/yyyy"));
+
+                            return true;
+                        }
+                        return false;
+                    }
+                    else
+                    {
+                        Debug.Write(response.StatusCode);
                     }
                     return false;
                 }
-                return false;
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                return false;
-            }            
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    return false;
+                }
+            }          
         }
         public ICommand LoginCommand =>
         new Command(async () =>

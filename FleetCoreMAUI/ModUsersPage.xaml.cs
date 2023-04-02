@@ -34,20 +34,21 @@ public partial class ModUsersPage : ContentPage
 
     public async Task<bool> GetUsers()
     {
-        var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-        var http = devSslHelper.HttpClient;
-        try
+        using(var http = new HttpClient())
         {
-            var response = await http.GetAsync(devSslHelper.DevServerRootUrl + "/api/account/getall");
-            var result = await response.Content.ReadAsStringAsync();
-            var users = JsonConvert.DeserializeObject<List<User>>(result);
-            list.ItemsSource = users.ToList();
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
+            try
+            {
+                var response = await http.GetAsync("https://primasystem.pl/api/account/getall");
+                var result = await response.Content.ReadAsStringAsync();
+                var users = JsonConvert.DeserializeObject<List<User>>(result);
+                list.ItemsSource = users.ToList();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }       
     }
     async void OpenMenu(object sender, EventArgs args)
     {
@@ -119,11 +120,11 @@ public partial class ModUsersPage : ContentPage
 
     async void GetBonuses(string fullname)
     {
-
+        await Shell.Current.GoToAsync($"//menu/modpanel/modUsers/bonus?fullName={fullname}");
     }
     async void GetRefuelings(string fullname)
     {
-
+        await Shell.Current.GoToAsync($"//menu/modpanel/modUsers/refuel?fullName={fullname}");
     }
     async void ResetPassword(string fullname)
     {
@@ -132,32 +133,32 @@ public partial class ModUsersPage : ContentPage
             var popup = new Spinner();
             Application.Current.MainPage.ShowPopup(popup);
 
-            var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-            var http = devSslHelper.HttpClient;
-
-            try
+            using(var http = new HttpClient())
             {
-                var json = JsonConvert.SerializeObject(fullname);
-                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/account/rpassword", content);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    popup.Close();
-                    await App.Current.MainPage.DisplayAlert("SUKCES", "Hasło zostało zresetowane", "Ok");
-                    OnAppearing();
+                    var json = JsonConvert.SerializeObject(fullname);
+                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await http.PostAsync("https://primasystem.pl/api/account/rpassword", content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        popup.Close();
+                        await App.Current.MainPage.DisplayAlert("SUKCES", "Hasło zostało zresetowane", "Ok");
+                        OnAppearing();
+                    }
+                    else
+                    {
+                        popup.Close();
+                        await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                    }
                 }
-                else
+                catch
                 {
                     popup.Close();
                     await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
                 }
-            }
-            catch
-            {
-                popup.Close();
-                await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
-            }
+            }          
         }
     }
     async void DeleteUser(string fullname)
@@ -167,32 +168,32 @@ public partial class ModUsersPage : ContentPage
             var popup = new Spinner();
             Application.Current.MainPage.ShowPopup(popup);
 
-            var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-            var http = devSslHelper.HttpClient;
-
-            try
+            using(var http = new HttpClient())
             {
-                var json = JsonConvert.SerializeObject(fullname);
-                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/account/delete", content);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    popup.Close();
-                    await App.Current.MainPage.DisplayAlert("SUKCES", "Użytkownik został usunięty", "Ok");
-                    OnAppearing();
+                    var json = JsonConvert.SerializeObject(fullname);
+                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await http.PostAsync("https://primasystem.pl/api/account/delete", content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        popup.Close();
+                        await App.Current.MainPage.DisplayAlert("SUKCES", "Użytkownik został usunięty", "Ok");
+                        OnAppearing();
+                    }
+                    else
+                    {
+                        popup.Close();
+                        await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                    }
                 }
-                else
+                catch
                 {
                     popup.Close();
                     await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
                 }
-            }
-            catch
-            {
-                popup.Close();
-                await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
-            }
+            }          
         }
     }
     async void ChangeRole(string fullname)
@@ -202,33 +203,32 @@ public partial class ModUsersPage : ContentPage
             var popup = new Spinner();
             Application.Current.MainPage.ShowPopup(popup);
 
-            var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-            var http = devSslHelper.HttpClient;
-
-            try
+            using(var http = new HttpClient())
             {
-                var json = JsonConvert.SerializeObject(fullname);
-                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/account/role", content);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    popup.Close();
-                    await App.Current.MainPage.DisplayAlert("SUKCES", $"Rola użytkownika {fullname} została zmieniona", "Ok");
-                    OnAppearing();
+                    var json = JsonConvert.SerializeObject(fullname);
+                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await http.PostAsync("https://primasystem.pl/api/account/role", content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        popup.Close();
+                        await App.Current.MainPage.DisplayAlert("SUKCES", $"Rola użytkownika {fullname} została zmieniona", "Ok");
+                        OnAppearing();
+                    }
+                    else
+                    {
+                        popup.Close();
+                        await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                    }
                 }
-                else
+                catch
                 {
                     popup.Close();
                     await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
                 }
-            }
-            catch
-            {
-                popup.Close();
-                await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
-            }
+            }           
         }
     }
-
 }

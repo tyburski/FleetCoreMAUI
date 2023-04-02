@@ -24,6 +24,7 @@ namespace FleetCoreMAUI
         public ICommand NoticeCommand => new Command(Notice);
         public ICommand VehiclesCommand => new Command(Vehicles);
         public ICommand BonusCommand => new Command(Bonus);
+        public ICommand GetBonusCommand => new Command(GetBonus);
         public ICommand CompanyCommand => new Command(Company);
         public ICommand ChangePasswordCommand => new Command(async()=>await ChangePassword());
         public ICommand LogOutCommand => new Command(async()=> await LogOut());
@@ -31,7 +32,7 @@ namespace FleetCoreMAUI
 
         private async void Notice()
         {
-            await App.Current.MainPage.Navigation.PushAsync(new NoticePage());
+            await Shell.Current.GoToAsync("//menu/notice");
         }
         private async void Vehicles()
         {
@@ -64,6 +65,10 @@ namespace FleetCoreMAUI
                 }
             }                   
         }
+        private async void GetBonus()
+        {
+            await Shell.Current.GoToAsync($"//menu/bonus?fullName={fullName}");
+        }
         private async void Company()
         {
             await App.Current.MainPage.Navigation.PushAsync(new CompanyPage());
@@ -89,36 +94,37 @@ namespace FleetCoreMAUI
                                 {
                                     var popup = new Spinner();
                                     Application.Current.MainPage.ShowPopup(popup);
-                                    var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-                                    var http = devSslHelper.HttpClient;
 
                                     var password = new ChangePasswordModel()
                                     {
                                         userId = id,
                                         Password = password1
                                     };
-                                    try
+                                    using(var http=new HttpClient())
                                     {
-                                        var json = JsonConvert.SerializeObject(password);
-                                        StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                                        var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/account/password", content);
-
-                                        if (response.IsSuccessStatusCode)
+                                        try
                                         {
-                                            popup.Close();
-                                            await App.Current.MainPage.DisplayAlert("SUKCES", "Hasło zostało zmienione", "Ok");
+                                            var json = JsonConvert.SerializeObject(password);
+                                            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                                            var response = await http.PostAsync("https://primasystem.pl/api/account/password", content);
+
+                                            if (response.IsSuccessStatusCode)
+                                            {
+                                                popup.Close();
+                                                await App.Current.MainPage.DisplayAlert("SUKCES", "Hasło zostało zmienione", "Ok");
+                                            }
+                                            else
+                                            {
+                                                popup.Close();
+                                                await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                                            }
                                         }
-                                        else
+                                        catch
                                         {
                                             popup.Close();
                                             await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
                                         }
-                                    }
-                                    catch
-                                    {
-                                        popup.Close();
-                                        await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
-                                    }
+                                    }                                   
                                 }
                                 else await App.Current.MainPage.DisplayAlert("BŁĄD", "Podane hasła nie są takie same", "Ok");
                             }
@@ -126,8 +132,7 @@ namespace FleetCoreMAUI
                         }                       
                     }
                     else await App.Current.MainPage.DisplayAlert("BŁĄD", "Pole nie może być puste", "Ok");
-                }
-                
+                }               
             }
         }
         private async void ModPanel()
@@ -142,42 +147,41 @@ namespace FleetCoreMAUI
                 
                 if (await SecureStorage.Default.GetAsync("userId") is null &&
                     await SecureStorage.Default.GetAsync("fullname") is null &&
-                    await SecureStorage.Default.GetAsync("role") is null)
+                    await SecureStorage.Default.GetAsync("role") is null &&
+                    await SecureStorage.Default.GetAsync("notice") is null)
                 {
                     await Shell.Current.GoToAsync("//login");
-                }
-                
+                }               
             }           
         }
         public async Task<bool> CreateBonus(string BonusContent)
         {
-            var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-            var http = devSslHelper.HttpClient;
             var user = SecureStorage.GetAsync("userId").Result;
 
-            try
+            using (var http = new HttpClient())
             {
-
-                var bonus = await Task.Run(() => JsonConvert.SerializeObject(new CreateBonusModel()
+                try
                 {
-                    userId = user,
-                    content = BonusContent
+                    var bonus = await Task.Run(() => JsonConvert.SerializeObject(new CreateBonusModel()
+                    {
+                        userId = user,
+                        content = BonusContent
 
-                }));
-                StringContent content = new StringContent(bonus, Encoding.UTF8, "application/json");
-                var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/bonus/create", content);
+                    }));
+                    StringContent content = new StringContent(bonus, Encoding.UTF8, "application/json");
+                    var response = await http.PostAsync("https://primasystem.pl/api/bonus/create", content);
 
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                    else return false;
                 }
-                else return false;
-            }
-            catch
-            {
-                return false;
-            }
+                catch
+                {
+                    return false;
+                }
+            }              
         }
         async Task GetDatas()
         {

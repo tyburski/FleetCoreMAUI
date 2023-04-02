@@ -55,31 +55,31 @@ namespace FleetCoreMAUI
         }
         public async Task<bool> Create()
         {
-            var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-            var http = devSslHelper.HttpClient;
-
-            try
+            using(var http = new HttpClient())
             {
-                string json = await Task.Run(() => JsonConvert.SerializeObject( new CreateVehicleModel()
+                try
                 {
-                    Plate = plate,
-                    Mileage = mileage,
-                    VIN = vin
-                }));
-                
-                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/vehicle/create", content);
+                    string json = await Task.Run(() => JsonConvert.SerializeObject(new CreateVehicleModel()
+                    {
+                        Plate = plate,
+                        Mileage = mileage,
+                        VIN = vin
+                    }));
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
+                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await http.PostAsync("https://primasystem.pl/api/vehicle/create", content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
-            }
-            catch 
-            {
-                return false;
-            }            
+                catch
+                {
+                    return false;
+                }
+            }              
         }
         public ICommand CreateVehicleCommand =>
         new Command(async () =>
@@ -95,7 +95,7 @@ namespace FleetCoreMAUI
             else
             {
                 popup.Close();
-                Application.Current.MainPage.DisplayAlert(null, "Błąd", "Ok");
+                await Application.Current.MainPage.DisplayAlert(null, "Błąd", "Ok");
             }
         });
     }

@@ -1,12 +1,46 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:FleetCoreMAUI.Models"
              x:Class="FleetCoreMAUI.NoticePage"
              Title="Ogłoszenia">
-    <VerticalStackLayout>
-        <Label 
-            Text="Ogłoszenia"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView Grid.Row="1"  Margin="10,0,10,10">
+
+        <StackLayout BackgroundColor="#3664D6" Padding="0">
+            <ListView x:Name="List" x:DataType="models:Notice" SelectionMode="None" HasUnevenRows="True" SeparatorVisibility="None">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <Grid Padding="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+
+                                </Grid.ColumnDefinitions>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="*"/>
+                                </Grid.RowDefinitions>
+
+                                <BoxView  Grid.ColumnSpan="3" Grid.RowSpan="3" Margin="5,5,5,0" Color="#22459C"/>
+                                <Label Grid.Row="0" Grid.Column="0" VerticalOptions="End" Padding="5,0,0,0" Margin="5,0,5,0" FontSize="15"
+                       Text="Ogłoszenie"/>
+                                <Label Grid.Row="0" Grid.Column="1" VerticalOptions="End" Padding="0,5,0,0" Margin="5,5,5,0" FontSize="15"
+                       Text="{Binding User.fullName}"/>
+                                <Label Grid.Row="0" Grid.Column="2"  VerticalOptions="End" HorizontalOptions="Start" Padding="5,0,5,0" Margin="5,0,5,0" FontSize="15"
+                       Text="{Binding ConvertedDate}"/>
+
+                                <StackLayout Grid.Row="1" Grid.ColumnSpan="3" BackgroundColor="White" HeightRequest="2" Margin="5"/>
+                                <Label Grid.Row="2" Grid.ColumnSpan="3" WidthRequest="380" VerticalOptions="Center" HorizontalOptions="Center" Padding="5,0,0,5" Margin="5,0,5,0"
+                       Text="{Binding Content}"/>
+
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ScrollView>
 </ContentPage>

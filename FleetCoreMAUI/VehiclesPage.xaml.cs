@@ -40,12 +40,12 @@ public partial class VehiclesPage : ContentPage
         var plate = button.ClassId;
         var mileage = button.AutomationId;
 
-        string result = await DisplayPromptAsync($"{plate}:Tankowanie", "Podaj ilość litrów:", "Dalej","Anuluj", keyboard: Keyboard.Numeric);
+        string result = await DisplayPromptAsync($"{plate}:Tankowanie", "Podaj ilość litrów:", "Dalej","Anuluj");
         if(result!=null)
         {
             if (!result.Equals(String.Empty))
             {
-                string result2 = await DisplayPromptAsync($"{plate}:Tankowanie", "Podaj przebieg:", "Prześlij", "Anuluj", keyboard: Keyboard.Numeric);
+                string result2 = await DisplayPromptAsync($"{plate}:Tankowanie", "Podaj przebieg:", "Prześlij", "Anuluj");
                 if (result2!=null)
                 {
                     if (!result2.Equals(String.Empty))
@@ -87,6 +87,10 @@ public partial class VehiclesPage : ContentPage
                             }
 
                         }
+                        else
+                        {
+                            await Application.Current.MainPage.DisplayAlert("BŁĄD", "Błędne wartości", "Ok");
+                        }
                     }
                     else
                     {
@@ -102,26 +106,25 @@ public partial class VehiclesPage : ContentPage
     }
     async Task<bool> Refuel(RefuelModel model)
     {
-        var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-        var http = devSslHelper.HttpClient;
-
-        try
+        using(var http = new HttpClient())
         {
-            var json = JsonConvert.SerializeObject(model);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/vehicle/refueling", content);
-
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                return true;
+                var json = JsonConvert.SerializeObject(model);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await http.PostAsync("https://primasystem.pl/api/vehicle/refueling", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else return false;
             }
-            else return false;
-        }
-        catch
-        {
-            return false;
-        }
+            catch
+            {
+                return false;
+            }
+        }        
     }
     async void OpenMenu(object sender, EventArgs args)
     {
@@ -135,65 +138,72 @@ public partial class VehiclesPage : ContentPage
         }
         else
         {
-            string action = await App.Current.MainPage.DisplayActionSheet($"{plate}:Menu pojazdu", "Anuluj", null, "Szczegóły pojazdu", "Edytuj pojazd", "Usuń pojazd");
-            if(action.Equals("Szczegóły pojazdu"))
+            string action = await App.Current.MainPage.DisplayActionSheet($"{plate}:Menu pojazdu", "Anuluj", null, "Szczegóły pojazdu", "Edytuj numer rej.","Edytuj przebieg", "Usuń pojazd");
+            if(action!=null)
             {
-                await Shell.Current.GoToAsync($"vehicleDetails?plate={plate}");
-            }
-            else if (action.Equals("Edytuj pojazd"))
-            {
-                await UpdateVehicle(plate);
-            }
-            else if (action.Equals("Usuń pojazd"))
-            {
-                await DeleteVehicle(plate);
-            }
+                if (action.Equals("Szczegóły pojazdu"))
+                {
+                    await Shell.Current.GoToAsync($"vehicleDetails?plate={plate}");
+                }
+                else if (action.Equals("Edytuj numer rej."))
+                {
+                    await UpdateVehicle(plate);
+                }
+                else if (action.Equals("Edytuj przebieg"))
+                {
+                    await UpdateMileage(plate);
+                }
+                else if (action.Equals("Usuń pojazd"))
+                {
+                    await DeleteVehicle(plate);
+                }
+            }          
         }   
     }
     public async Task<bool> GetVehicles()
     {
-       
-        var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-        var http = devSslHelper.HttpClient;
-        try
+       using(var http = new HttpClient())
         {
-            var response = await http.GetAsync(devSslHelper.DevServerRootUrl + "/api/vehicle");
-            var result = await response.Content.ReadAsStringAsync();
-            var vehicles = JsonConvert.DeserializeObject<List<VehicleViewModel>>(result);
-
-
-            foreach (VehicleViewModel v in vehicles)
+            try
             {
-                foreach (Event e in v.Events)
-                {
-                    var checkDate = e.Date.Subtract(DateTime.Now);
+                var response = await http.GetAsync("https://primasystem.pl/api/vehicle");
+                var result = await response.Content.ReadAsStringAsync();
+                var vehicles = JsonConvert.DeserializeObject<List<VehicleViewModel>>(result);
 
-                    if (checkDate.TotalDays <= 14)
-                    {
-                        v.isWarning = true;
-                    }
-                    else v.isWarning = false;
-                }
-                foreach(Repair r in v.Repairs)
+
+                foreach (VehicleViewModel v in vehicles)
                 {
-                    if(r.UserFinished is null)
+                    foreach (Event e in v.Events)
                     {
-                        v.isToRepair = true;
+                        var checkDate = e.Date.Subtract(DateTime.Now);
+
+                        if (checkDate.TotalDays <= 14)
+                        {
+                            v.isWarning = true;
+                        }
+                        else v.isWarning = false;
                     }
-                    else v.isToRepair = false;
+                    foreach (Repair r in v.Repairs)
+                    {
+                        if (r.UserFinished is null)
+                        {
+                            v.isToRepair = true;
+                        }
+                        else v.isToRepair = false;
+                    }
                 }
+
+                list = new ObservableCollection<VehicleViewModel>(vehicles.OrderBy(x => x.Plate));
+
+
+                return true;
+
             }
-
-            list = new ObservableCollection<VehicleViewModel>(vehicles);
-
-            
-            return true;
-            
-        }
-        catch
-        {
-            return false;
-        }
+            catch
+            {
+                return false;
+            }
+        }       
     }
     public async Task UpdateVehicle(string plate)
     {
@@ -204,28 +214,130 @@ public partial class VehiclesPage : ContentPage
             {
                 if (plate != null)
                 {
-                    var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-                    var http = devSslHelper.HttpClient;
-
                     var popup = new Spinner();
                     Application.Current.MainPage.ShowPopup(popup);
+
+                    using(var http = new HttpClient())
+                    {
+                        try
+                        {
+                            var veh = new UpdateVehicleModel()
+                            {
+                                Plate = plate,
+                                newPlate = result.ToUpper()
+
+                            };
+                            var json = JsonConvert.SerializeObject(veh);
+                            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                            var response = await http.PostAsync("https://primasystem.pl/api/vehicle/update", content);
+
+
+                            if (response.IsSuccessStatusCode)
+                            {
+                                popup.Close();
+                                await App.Current.MainPage.DisplayAlert("SUKCES", "Zmiany zostały zapisane", "Ok");
+                                OnAppearing();
+                            }
+                            else
+                            {
+                                popup.Close();
+                                await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                            }
+                        }
+                        catch
+                        {
+                            popup.Close();
+                            await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                        }
+                    }                    
+                }       
+            }
+        }
+    }
+    public async Task UpdateMileage(string plate)
+    {
+        string result = await DisplayPromptAsync($"{plate}:Zmiana Przebiegu", "Podaj nowy przebieg:", "Prześlij", "Anuluj", keyboard:Keyboard.Numeric);
+        if (result != null)
+        {
+            if (!result.Equals(String.Empty))
+            {
+                var popup = new Spinner();
+                Application.Current.MainPage.ShowPopup(popup);
+                if (Int64.TryParse(result, out long resultParsed))
+                {
+                    if (plate != null)
+                    {
+                        using(var http = new HttpClient())
+                        {
+                            try
+                            {
+                                var veh = new UpdateMileageModel()
+                                {
+                                    Plate = plate.ToUpper(),
+                                    Mileage = resultParsed
+
+                                };
+                                var json = JsonConvert.SerializeObject(veh);
+                                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                                var response = await http.PostAsync("https://primasystem.pl/api/vehicle/mileage", content);
+
+
+                                if (response.IsSuccessStatusCode)
+                                {
+                                    popup.Close();
+                                    await App.Current.MainPage.DisplayAlert("SUKCES", "Zmiany zostały zapisane", "Ok");
+                                    OnAppearing();
+                                }
+                                else
+                                {
+                                    popup.Close();
+                                    await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                                }
+                            }
+                            catch
+                            {
+                                popup.Close();
+                                await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                            }
+                        }                        
+                    }
+                    else
+                    {
+                        popup.Close();
+                        await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                    }
+
+                }
+                else
+                {
+                    popup.Close();
+                    await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                }
+            }
+        }
+    }
+    public async Task DeleteVehicle(string plate)
+    {
+        if(plate!=null)
+        {
+            if(await Application.Current.MainPage.DisplayAlert("Jesteś pewny?", $"Czy chcesz usunąć pojazd {plate}?","Tak","Anuluj"))
+            {
+                var popup = new Spinner();
+                Application.Current.MainPage.ShowPopup(popup);
+
+                using(var http = new HttpClient())
+                {
                     try
                     {
-                        var veh = new UpdateVehicleModel()
-                        {
-                            Plate = plate,
-                            newPlate = result.ToUpper()
-
-                        };
-                        var json = JsonConvert.SerializeObject(veh);
+                        var json = JsonConvert.SerializeObject(plate);
                         StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                        var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/vehicle/update", content);
+                        var response = await http.PostAsync("https://primasystem.pl/api/vehicle/delete", content);
 
 
                         if (response.IsSuccessStatusCode)
                         {
                             popup.Close();
-                            await App.Current.MainPage.DisplayAlert("SUKCES", "Zmiany zostały zapisane", "Ok");
+                            await App.Current.MainPage.DisplayAlert("SUKCES", "Pojazd został usunięty", "Ok");
                             OnAppearing();
                         }
                         else
@@ -239,49 +351,8 @@ public partial class VehiclesPage : ContentPage
                         popup.Close();
                         await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
                     }
-                }       
-            }
+                }               
+            }            
         }
     }
-    public async Task DeleteVehicle(string plate)
-    {
-        if(plate!=null)
-        {
-            if(await Application.Current.MainPage.DisplayAlert("Jesteś pewny?", $"Czy chcesz usunąć pojazd {plate}?","Tak","Anuluj"))
-            {
-                var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-                var http = devSslHelper.HttpClient;
-
-                var popup = new Spinner();
-                Application.Current.MainPage.ShowPopup(popup);
-                try
-                {
-                    var json = JsonConvert.SerializeObject(plate);
-                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                    var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/vehicle/delete", content);
-
-
-                    if (response.IsSuccessStatusCode)
-                    {
-                        popup.Close();
-                        await App.Current.MainPage.DisplayAlert("SUKCES", "Pojazd został usunięty", "Ok");
-                        OnAppearing();
-                    }
-                    else
-                    {
-                        popup.Close();
-                        await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
-                    }
-                }
-                catch
-                {
-                    popup.Close();
-                    await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
-                }
-            }
-            
-        }
-    }
-   
-
 }

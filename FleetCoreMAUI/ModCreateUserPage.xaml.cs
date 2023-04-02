@@ -11,17 +11,12 @@ namespace FleetCoreMAUI;
 
 public partial class ModCreateUserPage : ContentPage
 {
-
-
     public ModCreateUserPage()
     {
         InitializeComponent();
 
-        BindingContext = new ModCreateUserViewModel();
-        
+        BindingContext = new ModCreateUserViewModel();        
     }
-    
-
 }
 
 

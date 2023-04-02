@@ -120,7 +120,7 @@
                         />
             </BoxView.Shadow>
             <BoxView.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding ModCreateVehicleCommand}"/>
+                <TapGestureRecognizer Command="{Binding ModCreateNoticeCommand}"/>
             </BoxView.GestureRecognizers>
         </BoxView>
         <Label Text="Dodaj Ogłoszenie"
@@ -142,7 +142,7 @@
                         />
             </BoxView.Shadow>
             <BoxView.GestureRecognizers>
-                <TapGestureRecognizer Command="{Binding ModCreateVehicleCommand}"/>
+                <TapGestureRecognizer Command="{Binding ModUpdateCompanyCommand}"/>
             </BoxView.GestureRecognizers>
         </BoxView>
         <Label Text="Edytuj Dane Firmy"

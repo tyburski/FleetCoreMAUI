@@ -7,8 +7,7 @@
     <VerticalStackLayout VerticalOptions="Center"
                          HorizontalOptions="Center">
         <ActivityIndicator IsRunning="true" Scale="2"
-                   Color="#78A2CC"/>
-        <Label Text="Proszę czekać..." FontAttributes="Bold" FontSize="18" Padding="20"/>
+                   Color="#22459C"/>
 
     </VerticalStackLayout>
 

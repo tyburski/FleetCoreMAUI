@@ -30,25 +30,26 @@ public partial class ModLogs : ContentPage
     }
     public async Task<bool> GetLogs()
     {
-        var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-        var http = devSslHelper.HttpClient;
-        try
-        {
-            var response = await http.GetAsync(devSslHelper.DevServerRootUrl + "/api/account/getlogs");
-            var result = await response.Content.ReadAsStringAsync();
-            var logs = JsonConvert.DeserializeObject<List<Log>>(result);
-
-            foreach(var l in logs)
+       using(var http = new HttpClient())
+       {
+            try
             {
-                l.ConvertedDate = l.Date.ToString("dd/MM/yyyy HH:mm");
+                var response = await http.GetAsync("https://primasystem.pl/api/account/getlogs");
+                var result = await response.Content.ReadAsStringAsync();
+                var logs = JsonConvert.DeserializeObject<List<Log>>(result);
+
+                foreach (var l in logs)
+                {
+                    l.ConvertedDate = l.Date.ToString("dd/MM/yyyy HH:mm");
+                }
+                list.ItemsSource = logs.ToList();
+                return true;
             }
-            list.ItemsSource = logs.ToList();
-            return true;
-        }
-        catch
-        {
-            return false;
-        }
+            catch
+            {
+                return false;
+            }
+       }        
     }
     async void Refresh(object sender, EventArgs args)
     {

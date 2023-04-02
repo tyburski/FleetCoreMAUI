@@ -1,18 +1,31 @@
+﻿
 using FleetCoreMAUI.Models;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Text;
+using System.Text.Json;
+using System.Windows.Input;
+using System.Xml.Linq;
 
 namespace FleetCoreMAUI;
 
-public partial class CompanyPage : ContentPage
+
+public partial class ModUpdateCompanyPage : ContentPage
 {
-	public CompanyPage()
-	{
-		InitializeComponent();
-        Get();
-	}
-    public async Task Get()
+
+
+    public ModUpdateCompanyPage()
     {
+        InitializeComponent();
+
+        BindingContext = new ModUpdateCompanyViewModel();
+        
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        
         using(var http = new HttpClient())
         {
             try
@@ -24,12 +37,19 @@ public partial class CompanyPage : ContentPage
                 Name.Text = company.Name.ToUpper();
                 Address1.Text = company.Address1;
                 Address2.Text = company.Address2;
-                NIP.Text = $"NIP: {company.NIP}";
+                NIP.Text = company.NIP;
             }
             catch
             {
 
             }
-        }        
+        }       
     }
 }
+
+
+
+    
+
+
+

@@ -1,8 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net6.0-android;net6.0-ios;net6.0-maccatalyst</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net6.0-maccatalyst;net6.0-android</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
 		<OutputType>Exe</OutputType>
@@ -12,7 +11,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>FleetCoreMAUI</ApplicationTitle>
+		<ApplicationTitle>PRIMA</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.fleetcoremaui</ApplicationId>
@@ -28,18 +27,30 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+		<AssemblyName>PRIMA</AssemblyName>
+	</PropertyGroup>
+	
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
+	  <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net6.0-android|AnyCPU'">
+	  <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+	</PropertyGroup>
+
+	<PropertyGroup>
+	  <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
 	</PropertyGroup>
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appicon.png" />
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -52,24 +63,14 @@
 	  <None Remove="Platforms\Android\Resources\raw\cert.cer" />
 	  <None Remove="Resources\Fonts\Quicksand-VariableFont_wght.ttf" />
 	  <None Remove="Resources\Fonts\SegoeWP.ttf" />
-	  <None Remove="Resources\Images\car.png" />
-	  <None Remove="Resources\Images\dollarplus.png" />
-	  <None Remove="Resources\Images\dollarview.png" />
 	  <None Remove="Resources\Images\dots.png" />
-	  <None Remove="Resources\Images\exit.svg" />
 	  <None Remove="Resources\Images\flota.png" />
 	  <None Remove="Resources\Images\fuel.svg" />
-	  <None Remove="Resources\Images\info.png" />
-	  <None Remove="Resources\Images\money.svg" />
-	  <None Remove="Resources\Images\noticeview.png" />
 	  <None Remove="Resources\Images\pencil.png" />
 	  <None Remove="Resources\Images\refresh.png" />
-	  <None Remove="Resources\Images\settings.png" />
-	  <None Remove="Resources\Images\star.png" />
 	  <None Remove="Resources\Images\tool.png" />
 	  <None Remove="Resources\Images\user.png" />
 	  <None Remove="Resources\Images\warningSign.png" />
-	  <None Remove="Resources\Images\yellowstar.png" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -78,17 +79,17 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="DoneRapairsPage.xaml.cs">
-	    <DependentUpon>DoneRapairsPage.xaml</DependentUpon>
+	  <Compile Update="ModCreateNoticePage.xaml.cs">
+	    <DependentUpon>ModCreateNoticePage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="ModUpdateCompanyPage.xaml.cs">
+	    <DependentUpon>ModUpdateCompanyPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="ModLogs.xaml.cs">
 	    <DependentUpon>ModLogs.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="VehicleDetailsPage.xaml.cs">
 	    <DependentUpon>VehicleDetailsPage.xaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="RepairsPage.xaml.cs">
-	    <DependentUpon>RepairsPage.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="EventsPage.xaml.cs">
 	    <DependentUpon>EventsPage.xaml</DependentUpon>
@@ -117,16 +118,16 @@
 	  <MauiXaml Update="BonusPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="DoneRapairsPage.xaml">
+	  <MauiXaml Update="ModCreateNoticePage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="ModUpdateCompanyPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="ModLogs.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="VehicleDetailsPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="RepairsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="EventsPage.xaml">

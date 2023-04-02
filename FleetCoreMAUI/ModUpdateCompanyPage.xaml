@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="FleetCoreMAUI.ModUpdateCompanyPage"
+              BackgroundColor="#3664D6"
+             Title="Edytowanie Danych Firmy">
+
+    <VerticalStackLayout Spacing="10"
+                         Padding="0,10,0,0"
+                         VerticalOptions="Start"
+                         HorizontalOptions="Center">
+
+
+        <Border Stroke="Black"
+        StrokeThickness="1"
+        BackgroundColor="White"
+        Padding="10,0"
+        WidthRequest="300"
+        HorizontalOptions="Center">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="1" />
+            </Border.StrokeShape>
+            <Entry Text="{Binding name}" x:Name="Name"
+                Placeholder="Nazwa" 
+               />
+        </Border>
+
+        <Border Stroke="Black"
+        StrokeThickness="1"
+        BackgroundColor="White"
+        Padding="10,0"     
+        HorizontalOptions="Center"
+                WidthRequest="300">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="1" />
+            </Border.StrokeShape>
+            <Entry Text="{Binding address1}" x:Name="Address1"
+                Placeholder="Adres 1"
+                  />
+        </Border>
+        
+        <Border Stroke="Black"
+        StrokeThickness="1"
+        BackgroundColor="White"
+        Padding="10,0"     
+        HorizontalOptions="Center"
+                WidthRequest="300">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="1" />
+            </Border.StrokeShape>
+            <Entry Text="{Binding address2}" x:Name="Address2"
+                Placeholder="Adres 2"
+                  />
+        </Border>
+        <Border Stroke="Black"
+        StrokeThickness="1"
+        BackgroundColor="White"
+        Padding="10,0"     
+        HorizontalOptions="Center"
+                WidthRequest="300">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="1" />
+            </Border.StrokeShape>
+            <Entry Text="{Binding nip}" x:Name="NIP"
+                Placeholder="NIP"
+                  />
+        </Border>
+
+        <Button Command="{Binding UpdateCompanyCommand}" Text="Prześlij" BackgroundColor="LightGreen" WidthRequest="300" CornerRadius="1" Margin="20">
+            
+        </Button>
+
+    </VerticalStackLayout>
+
+</ContentPage>

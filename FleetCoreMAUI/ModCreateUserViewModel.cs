@@ -43,30 +43,30 @@ namespace FleetCoreMAUI
         }
         public async Task<bool> Create()
         {
-            var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-            var http = devSslHelper.HttpClient;
-
-            try
+            using(var http = new HttpClient())
             {
-                string json = await Task.Run(() => JsonConvert.SerializeObject( new CreateUserModel()
+                try
                 {
-                    firstName = firstname,
-                    lastName = surname,
-                }));
-                
-                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/account/create", content);
+                    string json = await Task.Run(() => JsonConvert.SerializeObject(new CreateUserModel()
+                    {
+                        firstName = firstname,
+                        lastName = surname,
+                    }));
 
-                if (response.IsSuccessStatusCode)
-                {
-                    return true;
+                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await http.PostAsync("https://primasystem.pl/api/account/create", content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
-            }
-            catch 
-            {
-                return false;
-            }            
+                catch
+                {
+                    return false;
+                }
+            }                     
         }
         public ICommand CreateUserCommand =>
         new Command(async () =>
@@ -82,7 +82,7 @@ namespace FleetCoreMAUI
             else
             {
                 popup.Close();
-                Application.Current.MainPage.DisplayAlert(null, "Błąd", "Ok");
+                await Application.Current.MainPage.DisplayAlert(null, "Błąd", "Ok");
             }
         });
     }

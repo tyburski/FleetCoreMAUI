@@ -24,6 +24,9 @@
         ContentTemplate="{DataTemplate local:BonusPage}"
         />
     <ShellContent
+        ContentTemplate="{DataTemplate local:NoticePage}"
+        />
+    <ShellContent
         ContentTemplate="{DataTemplate local:VehiclesPage}"
         />
     <ShellContent 
@@ -39,10 +42,19 @@
         ContentTemplate="{DataTemplate local:ModCreateVehiclePage}"
         />
     <ShellContent
+        ContentTemplate="{DataTemplate local:ModCreateNoticePage}"
+        />
+    <ShellContent
+        ContentTemplate="{DataTemplate local:ModUpdateCompanyPage}"
+        />
+    <ShellContent
         ContentTemplate="{DataTemplate local:ModUsersPage}"
         />
     <ShellContent
         ContentTemplate="{DataTemplate local:ModLogs}"
+        />
+    <ShellContent
+        ContentTemplate="{DataTemplate local:RefuelPage}"
         />
 
 </Shell>

@@ -43,54 +43,56 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
     }
     private async Task GetVehicle(string plate, string state)
     {
-        var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-        var http = devSslHelper.HttpClient;
         var popup = new Spinner();
         Application.Current.MainPage.ShowPopup(popup);
-        try
+
+        using(var http = new HttpClient())
         {
-            var json = JsonConvert.SerializeObject(plate);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/vehicle/get", content);
-
-            var resString = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<Vehicle>(resString);
-
-            Plate.Text = result.Plate;
-            Mileage.Text = result.Mileage.ToString();
-            VIN.Text = result.VIN;
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                if (state.Equals("events"))
+                var json = JsonConvert.SerializeObject(plate);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await http.PostAsync("https://primasystem.pl/api/vehicle/get", content);
+
+                var resString = await response.Content.ReadAsStringAsync();
+                var result = JsonConvert.DeserializeObject<Vehicle>(resString);
+
+                Plate.Text = result.Plate;
+                Mileage.Text = result.Mileage.ToString();
+                VIN.Text = result.VIN;
+
+                if (response.IsSuccessStatusCode)
                 {
-                    EventsRender(result);
-                }
-                else if (state.Equals("repairs"))
-                {
-                    RepairsRender(result);
-                }
-                else if (state.Equals("donerepairs"))
-                {
-                    DoneRepairsRender(result);
+                    if (state.Equals("events"))
+                    {
+                        EventsRender(result);
+                    }
+                    else if (state.Equals("repairs"))
+                    {
+                        RepairsRender(result);
+                    }
+                    else if (state.Equals("donerepairs"))
+                    {
+                        DoneRepairsRender(result);
+                    }
+                    else
+                    {
+                        popup.Close();
+                        await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                    }
+                    popup.Close();
                 }
                 else
                 {
                     popup.Close();
                     await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
                 }
-                popup.Close();
             }
-            else
+            catch (Exception ex)
             {
-                popup.Close();
-                await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                Debug.WriteLine(ex.Message);
             }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex.Message);
-        }
+        }       
     }
     async Task GetEvents(Vehicle vehicle)
     {
@@ -134,7 +136,7 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
                 list.Add(x);
             }
         }
-        RepairsList.ItemsSource = list.ToList();
+        RepairsList.ItemsSource = list.OrderByDescending(x=>x.CreatedAt);
     }
     async Task GetDoneRepairs(Vehicle vehicle)
     {
@@ -156,12 +158,11 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
                 list.Add(x);
             }
         }
-        DoneRepairsList.ItemsSource = list.ToList();
+        DoneRepairsList.ItemsSource = list.OrderByDescending(x=>x.FinishAt);
     }
 
     async void EventsRender(Vehicle vehicle)
     {
-
         Button1.BackgroundColor = colorDark;
         Button2.BackgroundColor = colorLight;
         Button3.BackgroundColor = colorLight;
@@ -199,20 +200,20 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
         DoneRepairs.IsVisible = true;
     }
 
-    void Button1_Clicked(object sender, EventArgs args)
+    async void Button1_Clicked(object sender, EventArgs args)
     {
-        GetVehicle(plate, "events");
+        await GetVehicle(plate, "events");
     }
-    void Button2_Clicked(object sender, EventArgs args)
+    async void Button2_Clicked(object sender, EventArgs args)
     {
-        GetVehicle(plate, "repairs");
+        await GetVehicle(plate, "repairs");
     }
-    void Button3_Clicked(object sender, EventArgs args)
+    async void Button3_Clicked(object sender, EventArgs args)
     {
-        GetVehicle(plate, "donerepairs");
+        await GetVehicle(plate, "donerepairs");
     }
 
-    async void OnDateClicked(object sender, EventArgs args)
+    void OnDateClicked(object sender, EventArgs args)
     {
         var button = (ImageButton)sender;
         var id = Int32.Parse(button.ClassId);
@@ -231,9 +232,6 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
     }
     async void OnSaveDateClicked(object sender, EventArgs args)
     {
-        var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-        var http = devSslHelper.HttpClient;
-
         var model = new UpdateEventDate()
         {
             Id = selectedId,
@@ -241,85 +239,22 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
         };
         var popup = new Spinner();
         Application.Current.MainPage.ShowPopup(popup);
-        try
+
+        using (var http = new HttpClient())
         {
-            var json = JsonConvert.SerializeObject(model);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/vehicle/event", content);
-
-            if (response.IsSuccessStatusCode)
-            {
-                popup.Close();
-                await App.Current.MainPage.DisplayAlert("SUKCES", "Data została zmieniona", "Ok");
-                DateChange.IsVisible = false;
-                Events.IsVisible = true;
-                GetVehicle(plate, "events");
-
-            }
-            else
-            {
-                popup.Close();
-                await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
-            }
-        }
-        catch
-        {
-            popup.Close();
-            await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
-        }
-
-    }
-    async void OnCancelDateClicked(object sender, EventArgs args)
-    {
-        DateChange.IsVisible = false;
-        Events.IsVisible = true;
-    }
-    public void OnDateSelected(object sender, DateChangedEventArgs args)
-    {
-        var picker = (DatePicker)sender;
-
-        if (picker.Date != null)
-        {
-            selectedDate = picker.Date;
-        }
-    }
-
-    async void CreateRepair(object sender, EventArgs args)
-    {
-        createRepairButton.IsVisible = false;
-        Repairs.IsVisible = false;
-        RepairCreate.IsVisible = true;
-    }
-    async void OnCreateRepairClicked(object sender, EventArgs args)
-    {
-        if (repairEntry.Text.Length<4)
-        {
-            await App.Current.MainPage.DisplayAlert("BŁĄD", "Musisz wpisać więcej niż 3 znaki", "Ok");
-        }
-        else
-        {
-            var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-            var http = devSslHelper.HttpClient;
-
-            var model = new CreateRepairModel()
-            {
-                Content = repairEntry.Text,
-                Plate = plate,
-                userId = await SecureStorage.GetAsync("userId")
-            };
-            var popup = new Spinner();
-            Application.Current.MainPage.ShowPopup(popup);
             try
             {
                 var json = JsonConvert.SerializeObject(model);
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/vehicle/repair/create", content);
+                var response = await http.PostAsync("http://primasystem.pl/api/vehicle/event", content);
 
                 if (response.IsSuccessStatusCode)
                 {
                     popup.Close();
-                    await App.Current.MainPage.DisplayAlert("SUKCES", "Usterka została utworzona", "Ok");
-                    GetVehicle(plate, "repairs");
+                    await App.Current.MainPage.DisplayAlert("SUKCES", "Data została zmieniona", "Ok");
+                    DateChange.IsVisible = false;
+                    Events.IsVisible = true;
+                    await GetVehicle(plate, "events");
 
                 }
                 else
@@ -335,9 +270,75 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
             }
         }
     }
+    void OnCancelDateClicked(object sender, EventArgs args)
+    {
+        DateChange.IsVisible = false;
+        Events.IsVisible = true;
+    }
+    public void OnDateSelected(object sender, DateChangedEventArgs args)
+    {
+        var picker = (DatePicker)sender;
+
+        if (picker.Date != null)
+        {
+            selectedDate = picker.Date;
+        }
+    }
+
+    void CreateRepair(object sender, EventArgs args)
+    {
+        createRepairButton.IsVisible = false;
+        Repairs.IsVisible = false;
+        RepairCreate.IsVisible = true;
+    }
+    async void OnCreateRepairClicked(object sender, EventArgs args)
+    {
+        if (repairEntry.Text.Length<4)
+        {
+            await App.Current.MainPage.DisplayAlert("BŁĄD", "Musisz wpisać więcej niż 3 znaki", "Ok");
+        }
+        else
+        {
+            var model = new CreateRepairModel()
+            {
+                Content = repairEntry.Text,
+                Plate = plate,
+                userId = await SecureStorage.GetAsync("userId")
+            };
+            var popup = new Spinner();
+            Application.Current.MainPage.ShowPopup(popup);
+
+            using(var http = new HttpClient())
+            {
+                try
+                {
+                    var json = JsonConvert.SerializeObject(model);
+                    StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                    var response = await http.PostAsync("https://primasystem.pl/api/vehicle/repair/create", content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        popup.Close();
+                        await App.Current.MainPage.DisplayAlert("SUKCES", "Usterka została utworzona", "Ok");
+                        await GetVehicle(plate, "repairs");
+                    }
+                    else
+                    {
+                        popup.Close();
+                        await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                    }
+                }
+                catch
+                {
+                    popup.Close();
+                    await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                }
+            }          
+        }
+    }
     async void OnCancelRepairClicked(object sender, EventArgs args)
     {
-        GetVehicle(plate, "repairs");
+        await GetVehicle(plate, "repairs");
     }
     async void FinishRepair(object sender, EventArgs args)
     {
@@ -364,42 +365,40 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
                     {
                         finishRepair.isBonus = false;
                     }
-                    var devSslHelper = new DevHttpsConnectionHelper(sslPort: 7003);
-                    var http = devSslHelper.HttpClient;
 
                     var popup = new Spinner();
                     Application.Current.MainPage.ShowPopup(popup);
-                    try
+
+                    using(var http = new HttpClient())
                     {
-                        var json = JsonConvert.SerializeObject(finishRepair);
-                        StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                        var response = await http.PostAsync(devSslHelper.DevServerRootUrl + "/api/vehicle/repair/finish", content);
-
-                        if (response.IsSuccessStatusCode)
+                        try
                         {
-                            popup.Close();
-                            await App.Current.MainPage.DisplayAlert("SUKCES", "Naprawa została zakończona", "Ok");
-                            GetVehicle(plate, "repairs");
+                            var json = JsonConvert.SerializeObject(finishRepair);
+                            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                            var response = await http.PostAsync("https://primasystem.pl/api/vehicle/repair/finish", content);
 
+                            if (response.IsSuccessStatusCode)
+                            {
+                                popup.Close();
+                                await App.Current.MainPage.DisplayAlert("SUKCES", "Naprawa została zakończona", "Ok");
+                                await GetVehicle(plate, "repairs");
+                            }
+                            else
+                            {
+                                popup.Close();
+                                await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                            }
                         }
-                        else
+                        catch
                         {
                             popup.Close();
                             await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
                         }
-                    }
-                    catch
-                    {
-                        popup.Close();
-                        await App.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
-                    }
+                    }                   
                 }
-            }
-            
-            
+            }                       
         }
     }
-
 }
 
     

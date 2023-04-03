@@ -105,7 +105,7 @@ namespace FleetCoreMAUI
             if (await Update() is true)
             {
                 popup.Close();
-                await App.Current.MainPage.DisplayAlert("SUKCES", "Pojazd utworzony pomyślnie", "Ok");
+                await App.Current.MainPage.DisplayAlert("SUKCES", "Zmiany zostały zapisane", "Ok");
                 await Shell.Current.GoToAsync("..");
             } 
             else

@@ -33,7 +33,7 @@
                        Text="{Binding Vehicle.Plate}"/>
 
                                 <Label Grid.Row="0" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Start" Padding="5,0,5,0" Margin="5,0,5,0" x:DataType="models:Refueling" 
-                       Text="Ilość:"/>
+                       Text="Litry:"/>
                                 <Label Grid.Row="1" Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Start" Padding="5,0,5,0" Margin="5,0,5,0" x:DataType="models:Refueling" 
                        Text="Przebieg:"/>
 

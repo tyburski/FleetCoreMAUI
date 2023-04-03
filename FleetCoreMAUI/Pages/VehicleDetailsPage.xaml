@@ -128,7 +128,7 @@
 
                         <Label Grid.Column="0" Grid.Row="1" Padding="10,5,5,5" VerticalOptions="Start" Margin="2,15,0,15" x:DataType="models:EventViewModel" 
                        Text="Wybierz Datę"/>
-                        <DatePicker x:Name="picker" Grid.Column="1" Grid.Row="1" FontSize="20" TextColor="White" Format="dd/MM/yyyy" MinimumDate="01/01/2023" HorizontalOptions="Center" VerticalOptions="Center" x:DataType="models:EventViewModel" 
+                        <DatePicker x:Name="picker" Grid.Column="1" Grid.Row="1" Format="dd/MM/yyyy" FontSize="20" TextColor="White" MinimumDate="01/01/2023" HorizontalOptions="Center" VerticalOptions="Center" x:DataType="models:EventViewModel" 
                        DateSelected="OnDateSelected"/>
 
                         <Button BackgroundColor="LightGreen" Grid.Row="2" Grid.ColumnSpan="2" Clicked="OnSaveDateClicked" Text="Zapisz" Margin="4,0,4,10"/>

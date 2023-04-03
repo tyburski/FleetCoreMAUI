@@ -11,7 +11,7 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>PRIMA</ApplicationTitle>
+		<ApplicationTitle>FLEET CORE</ApplicationTitle>
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.fleetcoremaui</ApplicationId>
@@ -27,7 +27,7 @@
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
-		<AssemblyName>PRIMA</AssemblyName>
+		<AssemblyName>FLEET CORE</AssemblyName>
 	</PropertyGroup>
 	
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net6.0-android|AnyCPU'">
@@ -79,91 +79,91 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="ModCreateNoticePage.xaml.cs">
+	  <Compile Update="Pages\ModCreateNoticePage.xaml.cs">
 	    <DependentUpon>ModCreateNoticePage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="ModUpdateCompanyPage.xaml.cs">
+	  <Compile Update="Pages\ModUpdateCompanyPage.xaml.cs">
 	    <DependentUpon>ModUpdateCompanyPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="ModLogs.xaml.cs">
+	  <Compile Update="Pages\ModLogs.xaml.cs">
 	    <DependentUpon>ModLogs.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="VehicleDetailsPage.xaml.cs">
+	  <Compile Update="Pages\VehicleDetailsPage.xaml.cs">
 	    <DependentUpon>VehicleDetailsPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="EventsPage.xaml.cs">
+	  <Compile Update="Pages\EventsPage.xaml.cs">
 	    <DependentUpon>EventsPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="ModCreateVehiclePage.xaml.cs">
+	  <Compile Update="Pages\ModCreateVehiclePage.xaml.cs">
 	    <DependentUpon>ModCreateVehiclePage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="ModCreateUserPage.xaml.cs">
+	  <Compile Update="Pages\ModCreateUserPage.xaml.cs">
 	    <DependentUpon>ModCreateUserPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="modUsersPage.xaml.cs">
+	  <Compile Update="Pages\ModUsersPage.xaml.cs">
 	    <DependentUpon>ModUsersPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="LoginPage.xaml.cs">
+	  <Compile Update="Pages\LoginPage.xaml.cs">
 	    <DependentUpon>LoginPage.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="ModPanel.xaml.cs">
+	  <Compile Update="Pages\ModPanel.xaml.cs">
 	    <DependentUpon>ModPanel.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="MenuPage.xaml.cs">
+	  <Compile Update="Pages\MenuPage.xaml.cs">
 	    <DependentUpon>MenuPage.xaml</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <MauiXaml Update="BonusPage.xaml">
+	  <MauiXaml Update="Pages\BonusPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ModCreateNoticePage.xaml">
+	  <MauiXaml Update="Pages\ModCreateNoticePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ModUpdateCompanyPage.xaml">
+	  <MauiXaml Update="Pages\ModUpdateCompanyPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ModLogs.xaml">
+	  <MauiXaml Update="Pages\ModLogs.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="VehicleDetailsPage.xaml">
+	  <MauiXaml Update="Pages\VehicleDetailsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="EventsPage.xaml">
+	  <MauiXaml Update="Pages\EventsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ModCreateVehiclePage.xaml">
+	  <MauiXaml Update="Pages\ModCreateVehiclePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ModCreateUserPage.xaml">
+	  <MauiXaml Update="Pages\ModCreateUserPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ModUsersPage.xaml">
+	  <MauiXaml Update="Pages\ModUsersPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="CompanyPage.xaml">
+	  <MauiXaml Update="Pages\CompanyPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="LoginPage.xaml">
+	  <MauiXaml Update="Pages\LoginPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="ModPanel.xaml">
+	  <MauiXaml Update="Pages\ModPanel.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="MenuPage.xaml">
+	  <MauiXaml Update="Pages\MenuPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="NoticePage.xaml">
+	  <MauiXaml Update="Pages\NoticePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="RefuelPage.xaml">
+	  <MauiXaml Update="Pages\RefuelPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Spinner.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="VehiclesPage.xaml">
+	  <MauiXaml Update="Pages\VehiclesPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

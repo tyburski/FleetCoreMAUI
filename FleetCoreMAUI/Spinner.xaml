@@ -8,6 +8,5 @@
     <VerticalStackLayout BackgroundColor="Transparent">
         <ActivityIndicator IsRunning="True" Margin="10" Scale="1.5" BackgroundColor="Transparent"/>
     </VerticalStackLayout>
-    
 
 </toolkit:Popup>

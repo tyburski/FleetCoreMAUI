@@ -40,7 +40,7 @@ public partial class VehiclesPage : ContentPage
         var plate = button.ClassId;
         var mileage = button.AutomationId;
 
-        string result = await DisplayPromptAsync($"{plate}:Tankowanie", "Podaj ilość litrów:", "Dalej","Anuluj");
+        string result = await DisplayPromptAsync($"{plate}:Tankowanie", "Podaj litry:", "Dalej","Anuluj");
         if(result!=null)
         {
             if (!result.Equals(String.Empty))

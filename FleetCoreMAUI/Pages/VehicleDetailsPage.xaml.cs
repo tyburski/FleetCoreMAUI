@@ -94,6 +94,7 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
             }
         }       
     }
+
     async Task GetEvents(Vehicle vehicle)
     {
         List<EventViewModel> convertedList = new List<EventViewModel>();
@@ -235,7 +236,7 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
         var model = new UpdateEventDate()
         {
             Id = selectedId,
-            Date = selectedDate.ToString("dd/MM/yyyy")
+            Date = selectedDate
         };
         var popup = new Spinner();
         Application.Current.MainPage.ShowPopup(popup);
@@ -246,7 +247,7 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
             {
                 var json = JsonConvert.SerializeObject(model);
                 StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-                var response = await http.PostAsync("http://primasystem.pl/api/vehicle/event", content);
+                var response = await http.PostAsync("https://primasystem.pl/api/vehicle/event", content);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -255,7 +256,6 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
                     DateChange.IsVisible = false;
                     Events.IsVisible = true;
                     await GetVehicle(plate, "events");
-
                 }
                 else
                 {

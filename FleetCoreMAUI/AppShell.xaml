@@ -4,57 +4,57 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:FleetCoreMAUI"
+    xmlns:pages="clr-namespace:FleetCoreMAUI.Pages;assembly=FleetCoreMAUI"
     Shell.FlyoutBehavior="Disabled"
     Shell.BackgroundColor="White">
 
 
-
     <ShellContent
         Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
+        ContentTemplate="{DataTemplate pages:MainPage}"
         Route="loading" />
 
     <ShellContent
-        ContentTemplate="{DataTemplate local:LoginPage}"
+        ContentTemplate="{DataTemplate pages:LoginPage}"
         Route="login"/>
     <ShellContent
-        ContentTemplate="{DataTemplate local:MenuPage}"
+        ContentTemplate="{DataTemplate pages:MenuPage}"
         Route="menu"/>
     <ShellContent
-        ContentTemplate="{DataTemplate local:BonusPage}"
+        ContentTemplate="{DataTemplate pages:BonusPage}"
         />
     <ShellContent
-        ContentTemplate="{DataTemplate local:NoticePage}"
+        ContentTemplate="{DataTemplate pages:NoticePage}"
         />
     <ShellContent
-        ContentTemplate="{DataTemplate local:VehiclesPage}"
+        ContentTemplate="{DataTemplate pages:VehiclesPage}"
         />
     <ShellContent 
-        ContentTemplate="{DataTemplate local:VehicleDetailsPage}"
+        ContentTemplate="{DataTemplate pages:VehicleDetailsPage}"
         />
     <ShellContent
-        ContentTemplate="{DataTemplate local:ModPanel}"
+        ContentTemplate="{DataTemplate pages:ModPanel}"
         />
     <ShellContent
-        ContentTemplate="{DataTemplate local:ModCreateUserPage}"
+        ContentTemplate="{DataTemplate pages:ModCreateUserPage}"
         />
     <ShellContent
-        ContentTemplate="{DataTemplate local:ModCreateVehiclePage}"
+        ContentTemplate="{DataTemplate pages:ModCreateVehiclePage}"
         />
     <ShellContent
-        ContentTemplate="{DataTemplate local:ModCreateNoticePage}"
+        ContentTemplate="{DataTemplate pages:ModCreateNoticePage}"
         />
     <ShellContent
-        ContentTemplate="{DataTemplate local:ModUpdateCompanyPage}"
+        ContentTemplate="{DataTemplate pages:ModUpdateCompanyPage}"
         />
     <ShellContent
-        ContentTemplate="{DataTemplate local:ModUsersPage}"
+        ContentTemplate="{DataTemplate pages:ModUsersPage}"
         />
     <ShellContent
-        ContentTemplate="{DataTemplate local:ModLogs}"
+        ContentTemplate="{DataTemplate pages:ModLogs}"
         />
     <ShellContent
-        ContentTemplate="{DataTemplate local:RefuelPage}"
+        ContentTemplate="{DataTemplate pages:RefuelPage}"
         />
 
 </Shell>

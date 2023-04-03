@@ -177,7 +177,7 @@ public partial class VehiclesPage : ContentPage
                     {
                         var checkDate = e.Date.Subtract(DateTime.Now);
 
-                        if (checkDate.TotalDays <= 14)
+                        if (checkDate.TotalDays <= 30 || e.Date <= DateTime.Now)
                         {
                             v.isWarning = true;
                         }

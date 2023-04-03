@@ -89,8 +89,12 @@ public partial class ModUsersPage : ContentPage
                 action = await App.Current.MainPage.DisplayActionSheet($"{fullName}:Menu", "Anuluj", null, "Wyświetl tankowania", "Resetuj hasło");
             }
         }
+        else if (userRole.Equals("Deleted"))
+        {
+            await App.Current.MainPage.DisplayAlert($"{fullName}:Menu", "Użytkownik usunięty", "Ok");
+        }
 
-        if(action!=null)
+        if (action!=null)
         {
             if(!action.Equals(String.Empty))
             {

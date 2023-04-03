@@ -82,7 +82,7 @@ public partial class MenuPage : ContentPage
                     {
                         var checkDate = e.Date.Subtract(DateTime.Now);
 
-                        if (checkDate.TotalDays <= 14 || e.Date <= DateTime.Now)
+                        if (checkDate.TotalDays <= 30 || e.Date <= DateTime.Now)
                         {
                             isEndingCounter++;
                             Debug.WriteLine(e.Date);

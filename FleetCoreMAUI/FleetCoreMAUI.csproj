@@ -66,6 +66,7 @@
 	  <None Remove="Resources\Images\dots.png" />
 	  <None Remove="Resources\Images\flota.png" />
 	  <None Remove="Resources\Images\fuel.svg" />
+	  <None Remove="Resources\Images\ind2.png" />
 	  <None Remove="Resources\Images\pencil.png" />
 	  <None Remove="Resources\Images\refresh.png" />
 	  <None Remove="Resources\Images\tool.png" />

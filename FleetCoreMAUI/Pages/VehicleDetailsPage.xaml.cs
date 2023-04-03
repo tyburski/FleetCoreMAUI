@@ -103,7 +103,7 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
         {
             var checkDate = e.Date.Subtract(DateTime.Now);
             Microsoft.Maui.Graphics.Color color = colorDark;
-            if (checkDate.TotalDays <= 14)
+            if (checkDate.TotalDays <= 30)
             {
                 color = colorWarning;
             }

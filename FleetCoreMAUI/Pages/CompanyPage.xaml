@@ -45,11 +45,9 @@
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
             </StackLayout>
+            <StackLayout BackgroundColor="#22459C" Padding="10" Margin="0,30,0,0">
+                <Image Source="ind2.png"/>
+            </StackLayout>
         </StackLayout>
-
-
-
-
-
     </ScrollView>
 </ContentPage>

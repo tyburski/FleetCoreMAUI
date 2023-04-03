@@ -256,7 +256,7 @@ public partial class VehiclesPage : ContentPage
     }
     public async Task UpdateMileage(string plate)
     {
-        string result = await DisplayPromptAsync($"{plate}:Zmiana Przebiegu", "Podaj nowy przebieg:", "Prześlij", "Anuluj", keyboard:Keyboard.Numeric);
+        string result = await DisplayPromptAsync($"{plate}:Zmiana Przebiegu", "Podaj nowy przebieg:", "Prześlij", "Anuluj");
         if (result != null)
         {
             if (!result.Equals(String.Empty))

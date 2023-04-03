@@ -7,14 +7,15 @@
     
     <ScrollView VerticalOptions="FillAndExpand">
         <StackLayout VerticalOptions="FillAndExpand">
-        <Grid ColumnSpacing="0" RowSpacing="0" VerticalOptions="FillAndExpand">
+        <Grid ColumnSpacing="0" RowSpacing="0" VerticalOptions="Fill">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="65" />
                     <RowDefinition Height="230"/>
                     <RowDefinition Height="230"/>
                 <RowDefinition Height="230"/>
                 <RowDefinition Height="*" />
+                
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -44,7 +45,7 @@
                 </Grid.ColumnDefinitions>
                 <Image Grid.Column="0"
                HorizontalOptions="Start"
-               VerticalOptions="Center" Source="flota.png" Margin="10" Scale="1"/>
+               VerticalOptions="Center" Source="flota.png" Margin="5" Scale="1"/>
 
 
                 <Button  Grid.Column="1"
@@ -185,7 +186,7 @@
                 </BoxView>
                 <Label Grid.Row="3"
                        Grid.Column="1"
-               Text="Zmiana hasła"
+               Text="Zmiana Hasła"
                HorizontalOptions="Center"
               VerticalOptions="Center"/>
 

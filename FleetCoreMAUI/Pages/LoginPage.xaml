@@ -9,7 +9,7 @@
                          VerticalOptions="Start"
                          HorizontalOptions="Center">
 
-        <Image Source="flota.png" VerticalOptions="Start" HorizontalOptions="Center" Margin="50,75,75,50" Scale="1.2"/>
+        <Image Source="flota.png" VerticalOptions="Start" HorizontalOptions="Center" Margin="20,20,0,20" Scale="0.8"/>
 
 
         <Border Stroke="Black"

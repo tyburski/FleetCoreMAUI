@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using System.Text;
 using System.Web;
+using static System.Net.WebRequestMethods;
 
 namespace FleetCoreMAUI;
 
@@ -44,14 +45,11 @@ public partial class NoticePage : ContentPage
                 {
                     foreach (Notice n in result)
                     {
-                        n.ConvertedDate = n.CreatedAt.ToString("dd/MM/yyyy");
+                        n.ConvertedDate = n.CreatedAt.ToString("dd/MM/yyyy HH:mm");
                     }
                     var l = result.OrderByDescending(x => x.CreatedAt);
                     List.ItemsSource = l;
-                    if (l.Any())
-                    {
-                        await SecureStorage.Default.SetAsync("notice", l.First().CreatedAt.ToString("dd/MM/yyyy HH:mm"));
-                    }
+                    await UpdateNoticeDate(l.First().CreatedAt);
                     return true;
                 }
                 else return false;
@@ -61,5 +59,20 @@ public partial class NoticePage : ContentPage
                 return false;
             }
         }       
+    }
+    async Task UpdateNoticeDate(DateTime date)
+    {
+        using(var http = new HttpClient())
+        {
+            var update = new UpdateNoticeDate()
+            {
+                Date = date,
+                userId = await SecureStorage.GetAsync("userId")
+            };
+            var json = JsonConvert.SerializeObject(update);
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+            await http.PostAsync("https://primasystem.pl/api/account/noticedate", content);
+            await SecureStorage.SetAsync("notice", date.ToString("dd-MM-yyyy HH:mm"));
+        }        
     }
 }

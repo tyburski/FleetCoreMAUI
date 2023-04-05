@@ -11,7 +11,7 @@ namespace FleetCoreMAUI.Models
         public int Id { get; set; }
         public string Content { get; set; }
 
-        public DateTime Date { get; set; }
+        public Nullable<DateTime> Date { get; set; }
         public string ConvertedDate { get; set; }
 
         public Color color { get; set; }

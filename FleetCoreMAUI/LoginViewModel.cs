@@ -66,7 +66,7 @@ namespace FleetCoreMAUI
                             await SecureStorage.Default.SetAsync("fullname", datas[0]);
                             await SecureStorage.Default.SetAsync("role", datas[1]);
                             await SecureStorage.Default.SetAsync("userId", datas[2]);
-                            await SecureStorage.Default.SetAsync("notice", DateTime.Now.ToString("dd/MM/yyyy"));
+                            await SecureStorage.Default.SetAsync("notice", datas[3]);
 
                             return true;
                         }

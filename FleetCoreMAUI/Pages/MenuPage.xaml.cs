@@ -2,6 +2,7 @@
 using FleetCoreMAUI.Models;
 using Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -20,7 +21,7 @@ public partial class MenuPage : ContentPage
 
     public int isEndingCounter = 0;
     public DateTime lastNoticeDate;
-    public bool noticesExist = false;
+
     public MenuPage()
     {
         InitializeComponent();
@@ -38,14 +39,18 @@ public partial class MenuPage : ContentPage
         }
         else warning.IsVisible = false;
 
-        noticesExist = false;
-        await GetNotices();
-        if (!lastNoticeDate.ToString("dd/MM/yyyy HH:mm").Equals(await SecureStorage.Default.GetAsync("notice")) && noticesExist)
+        if(await GetNotices())
         {
-            notice.IsVisible = true;
+            Debug.WriteLine(lastNoticeDate.ToString("dd/MM/yyyy HH:mm"));
+            Debug.WriteLine(await SecureStorage.Default.GetAsync("notice"));
+
+            if (!lastNoticeDate.Equals(await GetDate()))
+            {
+                notice.IsVisible = true;
+            }
+            else notice.IsVisible = false;
         }
         else notice.IsVisible = false;
-
     }
     async Task ModButton()
     {
@@ -80,13 +85,17 @@ public partial class MenuPage : ContentPage
                 {
                     foreach (Event e in v.Events)
                     {
-                        var checkDate = e.Date.Subtract(DateTime.Now);
-
-                        if (checkDate.TotalDays <= 30 || e.Date <= DateTime.Now)
+                        if (e.Date.HasValue)
                         {
-                            isEndingCounter++;
-                            Debug.WriteLine(e.Date);
+                            var checkDate = e.Date.Value.Subtract(DateTime.Now);
+
+                            if (checkDate.TotalDays <= 30 || e.Date <= DateTime.Now)
+                            {
+                                isEndingCounter++;
+                            }
                         }
+                        else
+                            isEndingCounter++;                      
                     }
                 }
             }
@@ -95,7 +104,7 @@ public partial class MenuPage : ContentPage
             }
         }
     }
-    public async Task GetNotices()
+    public async Task<bool> GetNotices()
     {
         using(var http = new HttpClient())
         {
@@ -112,18 +121,42 @@ public partial class MenuPage : ContentPage
                     {
                         foreach (Notice n in result)
                         {
-                            n.ConvertedDate = n.CreatedAt.ToString("dd/MM/yyyy");
+                            n.ConvertedDate = n.CreatedAt.ToString("dd/MM/yyyy HH:mm");
                         }
                         var l = result.OrderByDescending(x => x.CreatedAt);
                         lastNoticeDate = l.First().CreatedAt;
-                        noticesExist= true;
+                        return true;
                     }
-                    else noticesExist = false;                  
+                    else return false;
                 }
+                else return false;
             }
             catch
             {
-
+                return false;
+            }
+        }
+    }
+    public async Task<DateTime> GetDate()
+    {
+        using (var http = new HttpClient())
+        {
+            try
+            {
+                var json = JsonConvert.SerializeObject(await SecureStorage.GetAsync("userId"));
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                var response = await http.PostAsync("https://primasystem.pl/api/account/validate", content);
+                var dateString = response.Content.ReadAsStringAsync();
+                var date = JsonConvert.DeserializeObject<DateTime>(dateString.Result);
+                if (response.IsSuccessStatusCode)
+                {
+                    return date;
+                }
+                else return DateTime.MinValue;
+            }
+            catch
+            {
+                return DateTime.MinValue;
             }
         }
     }

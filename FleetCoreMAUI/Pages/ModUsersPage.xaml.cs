@@ -41,7 +41,7 @@ public partial class ModUsersPage : ContentPage
                 var response = await http.GetAsync("https://primasystem.pl/api/account/getall");
                 var result = await response.Content.ReadAsStringAsync();
                 var users = JsonConvert.DeserializeObject<List<User>>(result);
-                list.ItemsSource = users.ToList();
+                list.ItemsSource = users.Where(x=>!x.Role.Equals("Deleted")).ToList();
                 return true;
             }
             catch
@@ -88,10 +88,6 @@ public partial class ModUsersPage : ContentPage
             {
                 action = await App.Current.MainPage.DisplayActionSheet($"{fullName}:Menu", "Anuluj", null, "Wyświetl tankowania", "Resetuj hasło");
             }
-        }
-        else if (userRole.Equals("Deleted"))
-        {
-            await App.Current.MainPage.DisplayAlert($"{fullName}:Menu", "Użytkownik usunięty", "Ok");
         }
 
         if (action!=null)

@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Maui.Views;
 using FleetCoreMAUI.Models;
+using Microsoft.Maui.Controls.Handlers.Items;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Reflection;
@@ -11,7 +13,6 @@ namespace FleetCoreMAUI;
 
 public partial class VehiclesPage : ContentPage
 {
-    ObservableCollection<VehicleViewModel> list { get; set; } = new();
 
     public VehiclesPage()
     {
@@ -20,20 +21,16 @@ public partial class VehiclesPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        await Render();
-    }
-    async Task Render()
-    {
         var popup = new Spinner();
         Application.Current.MainPage.ShowPopup(popup);
 
         if (await GetVehicles() is true)
         {
-            ColList.ItemsSource = list;
             await Task.Delay(1000);
             popup.Close();
         }
     }
+
     async void RefuelClicked(object sender, EventArgs args)
     {
         var button = (ImageButton)sender;
@@ -54,38 +51,44 @@ public partial class VehiclesPage : ContentPage
                         bool res2Parse = Int64.TryParse(result2, out long result2Parsed);
                         Int64.TryParse(mileage, out long mileageParsed);
 
+
                         if (resParse && res2Parse)
                         {
-
-                            if (result2Parsed > mileageParsed)
+                            if(resultParsed < 999.9)
                             {
-                                var popup = new Spinner();
-                                Application.Current.MainPage.ShowPopup(popup);
-                                var refuel = new RefuelModel()
+                                if (result2Parsed > mileageParsed)
                                 {
-                                    Plate = plate.ToString(),
-                                    Mileage = result2Parsed,
-                                    Quantity = resultParsed,
-                                    userId = SecureStorage.Default.GetAsync("userId").Result
-                                };
+                                    var popup = new Spinner();
+                                    Application.Current.MainPage.ShowPopup(popup);
+                                    var refuel = new RefuelModel()
+                                    {
+                                        Plate = plate.ToString(),
+                                        Mileage = result2Parsed,
+                                        Quantity = resultParsed,
+                                        userId = SecureStorage.Default.GetAsync("userId").Result
+                                    };
 
-                                if (await Refuel(refuel) is true)
-                                {
-                                    popup.Close();
-                                    await Application.Current.MainPage.DisplayAlert("SUKCES", $"Pomyślnie zapisano tankowanie dla pojazdu {plate}", "Ok");
-                                    OnAppearing();
+                                    if (await Refuel(refuel) is true)
+                                    {
+                                        popup.Close();
+                                        await Application.Current.MainPage.DisplayAlert("SUKCES", $"Pomyślnie zapisano tankowanie dla pojazdu {plate}", "Ok");
+                                        OnAppearing();
+                                    }
+                                    else
+                                    {
+                                        popup.Close();
+                                        await Application.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                                    }
                                 }
                                 else
                                 {
-                                    popup.Close();
-                                    await Application.Current.MainPage.DisplayAlert("BŁĄD", "Spróbuj ponownie", "Ok");
+                                    await Application.Current.MainPage.DisplayAlert("BŁĄD", "Podany przebieg jest niższy od aktualnego", "Ok");
                                 }
                             }
                             else
                             {
-                                await Application.Current.MainPage.DisplayAlert("BŁĄD", "Podany przebieg jest \n niższy od aktualnego", "Ok");
+                                await Application.Current.MainPage.DisplayAlert("BŁĄD", "Błędne wartości", "Ok");
                             }
-
                         }
                         else
                         {
@@ -170,31 +173,35 @@ public partial class VehiclesPage : ContentPage
                 var result = await response.Content.ReadAsStringAsync();
                 var vehicles = JsonConvert.DeserializeObject<List<VehicleViewModel>>(result);
 
-
+                var list = new List<VehicleViewModel>();
                 foreach (VehicleViewModel v in vehicles)
                 {
                     foreach (Event e in v.Events)
                     {
-                        var checkDate = e.Date.Subtract(DateTime.Now);
-
-                        if (checkDate.TotalDays <= 30 || e.Date <= DateTime.Now)
+                        if (e.Date.HasValue)
                         {
-                            v.isWarning = true;
+                            var checkDate = e.Date.Value.Subtract(DateTime.Now);
+                            if (checkDate.TotalDays <= 30 || e.Date.Value < DateTime.Now)
+                            {
+                                v.isWarning = true;
+                                break;
+                            }
+                            else v.isWarning = false;
                         }
-                        else v.isWarning = false;
                     }
                     foreach (Repair r in v.Repairs)
                     {
                         if (r.UserFinished is null)
                         {
                             v.isToRepair = true;
+                            break;
                         }
                         else v.isToRepair = false;
                     }
+                    list.Add(v);
+                    
                 }
-
-                list = new ObservableCollection<VehicleViewModel>(vehicles.OrderBy(x => x.Plate));
-
+                ColList.ItemsSource = list;
 
                 return true;
 

@@ -14,7 +14,6 @@
 
         <Border Stroke="Black"
         StrokeThickness="1"
-        BackgroundColor="White"
         Padding="10,0"
         WidthRequest="300"
         HorizontalOptions="Center">
@@ -22,7 +21,9 @@
                 <RoundRectangle CornerRadius="1" />
             </Border.StrokeShape>
             <Editor AutoSize="TextChanges" x:Name="Cont"
-                Placeholder="Wpisz Treść" 
+                    BackgroundColor="White"
+                Placeholder="Wpisz Treść"
+                    Margin="2,0,0,0"
                />
         </Border>
 

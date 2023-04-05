@@ -5,16 +5,16 @@
              x:Class="FleetCoreMAUI.MenuPage"
              Shell.NavBarIsVisible="False">
     
-    <ScrollView VerticalOptions="FillAndExpand">
+    <ScrollView VerticalOptions="Fill">
         <StackLayout VerticalOptions="FillAndExpand">
-        <Grid ColumnSpacing="0" RowSpacing="0" VerticalOptions="Fill">
+        <Grid ColumnSpacing="0">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="65" />
+                <RowDefinition Height="*" />
                     <RowDefinition Height="230"/>
                     <RowDefinition Height="230"/>
                 <RowDefinition Height="230"/>
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
                 
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -37,15 +37,16 @@
             <Grid Grid.Row="0"
               Grid.ColumnSpan="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition />
+                    <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
+                
                 <Image Grid.Column="0"
                HorizontalOptions="Start"
-               VerticalOptions="Center" Source="flota.png" Margin="5" Scale="1"/>
+               VerticalOptions="Center"  HeightRequest="65" Source="flota.png" Margin="5" Scale="1"/>
 
 
                 <Button  Grid.Column="1"
@@ -221,6 +222,7 @@
                HorizontalOptions="End"
                VerticalOptions="Center" 
                    Margin="10"   
+                           Padding="10"
                            TextColor="Black"
                />
                     <Button  x:Name="modButton" Grid.Column="2"

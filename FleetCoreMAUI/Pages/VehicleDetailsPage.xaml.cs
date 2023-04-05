@@ -100,20 +100,23 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
         List<EventViewModel> convertedList = new List<EventViewModel>();
 
         foreach (Event e in vehicle.Events)
-        {
-            var checkDate = e.Date.Subtract(DateTime.Now);
-            Microsoft.Maui.Graphics.Color color = colorDark;
-            if (checkDate.TotalDays <= 30)
-            {
-                color = colorWarning;
-            }
-            else color = colorDark;
+        {           
             var x = new EventViewModel();
             x.Id = e.Id;
             x.Content = e.Content;
             x.Date = e.Date;
-            x.ConvertedDate = e.Date.ToString("dd/MM/yyyy");
-            x.color = color;
+            if (e.Date.HasValue)
+            {
+                x.ConvertedDate = e.Date.Value.ToString("dd/MM/yyyy");
+
+                var checkDate = e.Date.Value.Subtract(DateTime.Now);
+
+                if (checkDate.TotalDays <= 30 || e.Date <= DateTime.Now)
+                {
+                    x.color = colorWarning;
+                }
+                else x.color = colorDark;
+            }
             convertedList.Add(x);
         }
         eventsList = new ObservableCollection<EventViewModel>(convertedList);
@@ -228,7 +231,12 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
         var ev = eventsList.FirstOrDefault(x => x.Id.Equals(id));
         content.Text = ev.Content;
         date.Text = ev.ConvertedDate;
-        picker.Date = ev.Date;
+        if (ev.Date.HasValue)
+        {
+            picker.Date = DateTime.Now.AddYears(1);
+        }
+        else picker.Date = DateTime.Now;
+            
         selectedId = id;
     }
     async void OnSaveDateClicked(object sender, EventArgs args)
@@ -293,7 +301,7 @@ public partial class VehicleDetailsPage : ContentPage, IQueryAttributable
     }
     async void OnCreateRepairClicked(object sender, EventArgs args)
     {
-        if (repairEntry.Text.Length<4)
+        if (repairEntry.Text.Length<3)
         {
             await App.Current.MainPage.DisplayAlert("BŁĄD", "Musisz wpisać więcej niż 3 znaki", "Ok");
         }

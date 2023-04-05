@@ -1,6 +1,14 @@
 # FleetCoreMAUI
 Aplikacja służąca do zarządzania firmą posiadającą własną flotę pojazdów.
 
+```C#
+foreach(System fleetCore in company.Systems)
+{
+    company.easyManagement = true;
+}
+
+```
+
 ## Api (Asp.Net Core)
 https://github.com/tyburski/FleetCore
 

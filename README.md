@@ -24,7 +24,7 @@ https://www.youtube.com/watch?v=ceEvRdhEaNk
 <img src="https://user-images.githubusercontent.com/129940051/230162738-3e534641-a8aa-4638-ab83-aa08ab41b3d6.jpg" height="500"></h3>
 
 ### Panel moderatora
-<img src="https://user-images.githubusercontent.com/129940051/230167548-8b81d2c3-d626-471b-8f15-d2fdc792de41.jpg" height="500>
+<img src="https://user-images.githubusercontent.com/129940051/230167548-8b81d2c3-d626-471b-8f15-d2fdc792de41.jpg" height="500">
 
 ### Strona ogłoszeń // Dodawanie ogłoszenia z panelu moderatora
 <h3><img src="https://user-images.githubusercontent.com/129940051/230163200-6c980c28-e3bb-4213-a6d0-e3279991e497.jpg" height="500">

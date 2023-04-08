@@ -1,4 +1,4 @@
-# FleetCoreMAUI
+# Fleet Core
 Aplikacja służąca do zarządzania firmą posiadającą własną flotę pojazdów.
 
 ```C#

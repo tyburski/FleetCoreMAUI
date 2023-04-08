@@ -31,11 +31,12 @@ https://www.youtube.com/watch?v=ceEvRdhEaNk
 <img src="https://user-images.githubusercontent.com/129940051/230167832-013ed4e6-cf52-4878-a20c-222a7d6dd85b.jpg" height="500"></h3>
 
 ### Strona pojazdów
-<h3>Sygnalizacja zbliżającego się wydarzenia oraz występnowania bieżących napraw
-System tankowania z automatyczną aktualizacją przebiegu pojazdu
-System napraw z możliwością kończenia naprawy jako bonus (System premiowy)
-Menu pojazdu dla moderatora/właściciela. Dla użytkownika przejście bezpośrednio do szczegółów pojazdu
-Dodawanie nowego pojazdu z panelu moderatora</h3>
+
+<h4>Sygnalizacja zbliżającego się wydarzenia oraz występnowania bieżących napraw</h4>
+<h4>System tankowania z automatyczną aktualizacją przebiegu pojazdu</h4>
+<h4>System napraw z możliwością kończenia naprawy jako bonus (System premiowy)</h4>
+<h4>Menu pojazdu dla moderatora/właściciela. Dla użytkownika przejście bezpośrednio do szczegółów pojazdu</h4>
+<h4>Dodawanie nowego pojazdu z panelu moderatora</h4>
 
 <h3><img src="https://user-images.githubusercontent.com/129940051/230164933-059b1aad-bae2-45b0-b109-d057f2a9e48f.jpg" height="500">
 <img src="https://user-images.githubusercontent.com/129940051/230165420-731510ea-e1ef-4ce5-8466-704a7569885c.jpg" height="500"></h3>
@@ -54,12 +55,13 @@ Dodawanie nowego pojazdu z panelu moderatora</h3>
 <img src="https://user-images.githubusercontent.com/129940051/230169348-12fcb95d-5ee7-43b9-90ac-341650f02d4e.jpg" height="500"></h3>
 
 ### Lista użytkowników w panelu moderatora
-<h3>Menu użytkownika:
-Wyświetlanie bonusów (Tylko dla właściciela)
-Wyświetlanie tankowań
-Resetowanie hasła do default'owego 
-Zmiana roli 'User/Moderator' (Tylko dla właściciela)
-Usuwanie użytkownika</h3>
+
+<h4>Menu użytkownika:</h4>
+<h4>Wyświetlanie bonusów (Tylko dla właściciela)</h4>
+<h4>Wyświetlanie tankowań</h4>
+<h4>Resetowanie hasła do default'owego</h4>
+<h4>Zmiana roli 'User/Moderator' (Tylko dla właściciela)</h4>
+<h4>Usuwanie użytkownika</h4>
 
 <h3><img src="https://user-images.githubusercontent.com/129940051/230170314-97b884ad-e24f-4ae6-8ae3-0dafd59e7b66.jpg" height="500">
 <img src="https://user-images.githubusercontent.com/129940051/230170405-6cbaa34b-7496-4c3c-a703-50d6544869c6.jpg" height="500">
@@ -70,6 +72,7 @@ Usuwanie użytkownika</h3>
 <img src="https://user-images.githubusercontent.com/129940051/230170611-92fdd2d2-5929-42b5-a124-558aee04c7e0.jpg" height="500"></h3>
 
 ### Panel aktywności
+
 Logi zawierające tankowania, dodawanie napraw oraz kończenie napraw
 
 <img src="https://user-images.githubusercontent.com/129940051/230171082-be34e325-f178-4ce9-9343-0a3e2877a755.jpg" height="500">
